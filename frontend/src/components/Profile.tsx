@@ -37,7 +37,7 @@ const Profile: React.FC = () => {
 
     const fetchBasicData = async () => {
         try {
-            let response = await axios.get(`http://localhost:3000/user`, {
+            const response = await axios.get(`http://localhost:3000/user`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
@@ -446,7 +446,6 @@ const Profile: React.FC = () => {
         };
 
         const updatePersonalDetails = async (values: typeof personalValues) => {
-            // Update personal details logic her
             try {
                 const response = await axios.put('http://localhost:3000/Update_User', values, {
                     headers: {
