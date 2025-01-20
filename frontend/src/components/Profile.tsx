@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Options from './Options';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 interface ProfileParams {
     id: string;
@@ -152,6 +153,7 @@ const Profile: React.FC = () => {
                 });
                 if (response.status === 200) {
                     setIsUpdated(!isUpdated);
+                    toast.success("Basic details updated successfully!");
                 }
             } catch (err) {
                 console.error("Failed to update basic details", err);
@@ -453,6 +455,7 @@ const Profile: React.FC = () => {
                 });
                 if (response.status === 200) {
                     setIsUpdated(!isUpdated);
+                    toast.success("personal details updated successfully!");
                 }
             } catch (err) {
                 console.error("Failed to update personal details", err);
