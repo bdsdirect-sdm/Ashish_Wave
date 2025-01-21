@@ -16,12 +16,11 @@ const WavesList: React.FC = () => {
     const [posterIcon, setPosterIcon] = useState<string | null>(null);
     const [waveImage, setWaveImage] = useState<string | null>(null);
     const [waveMessage, setWaveMessage] = useState<string | null>(null);
-    
 
     const fetchWaves = async () => {
         try {
             const response = await axios.get(
-                `http://127.0.0.5:3000/getWaves/${id}`,
+                `http://localhost:3000/active_Waves`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
@@ -30,9 +29,9 @@ const WavesList: React.FC = () => {
                     },
                 }
             );
-            console.log(response)
-            if (response.data.status) {
-                setWaveList(response.data.data);
+            console.log(response);
+            if (response.data.waves) {
+                setWaveList(response.data.waves);
             }
         } catch (err: any) {
             toast.error(err.response.data.message, {
@@ -87,7 +86,7 @@ const WavesList: React.FC = () => {
                     <h1 id="no-friends">No active waves!</h1>
                 ) : null}
             </div>
-            {/* {openModel && (
+            {openModel && (
                 <WaveInfo
                     closeModel={closeModel}
                     waveId={waveId}
@@ -96,7 +95,7 @@ const WavesList: React.FC = () => {
                     posterIcon={posterIcon}
                     posterName={posterName}
                 />
-            )} */}
+            )}
         </div>
     );
 };

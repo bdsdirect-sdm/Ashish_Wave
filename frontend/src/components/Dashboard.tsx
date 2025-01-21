@@ -13,14 +13,14 @@ const Dashboard: React.FC = () => {
     return (
         <div className="dashboard-wrapper">
             <div id="friend-dashboard">
-                <div className="user-wrapper"> 
-                    
-                     <WavesList />
-                    {/* <FriendList isAccepted={isAccepted} />
+                <div className="user-wrapper">
+
+                    <WavesList />
+                    <FriendList isAccepted={isAccepted} />
                     <FriendRequests
                         isAccepted={isAccepted}
                         setIsAccepted={setIsAccepted}
-                    /> */}
+                    />
                 </div>
             </div>
             <Options isUpdated={false} />

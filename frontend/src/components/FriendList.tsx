@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {FriendInfo} from "./FriendInfo";
+import FriendInfo from "./FriendInfo";
 
 interface Friend {
     friendId: string;
@@ -25,7 +25,7 @@ const FriendList: React.FC<FriendListProps> = ({ isAccepted }) => {
     const fetchFriends = async () => {
         try {
             const response = await axios.get(
-                `http://127.0.0.5:3000/user/${id}/friends`,
+                `http://localhost:3000/allfriends`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -44,8 +44,8 @@ function UpdatePassword() {
             const response = await axios.put(
                 `http://127.0.0.5:3000/updatePassword`,
                 {
-                    password: data.new_password,
-                    old_password: data.old_password,
+                    newPassword: data.new_password,
+                    oldPassword: data.old_password,
                 },
                 {
                     headers: {
@@ -60,7 +60,7 @@ function UpdatePassword() {
                 autoClose: 300,
             });
             setTimeout(() => {
-                navigate(`/user/${id}`);
+                navigate('/dashboard');
             }, 1000);
         } catch (err) {
             toast.error(err.response.data.message, {

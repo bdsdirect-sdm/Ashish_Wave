@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 // import { Request, Response, NextFunction } from 'express';
 import Preference from '../models/Preference';
+import Comment from '../models/Comments';
 
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
@@ -9,6 +10,8 @@ import multer from 'multer';
 import path from 'path';
 import upload from '../utils/multer';
 import Wave from '../models/Waves';
+import Friend from '../models/Friends';
+import { sendFriendRequestMail } from '../utils/mailer';
 
 
 
@@ -87,6 +90,10 @@ export const updatePassword = async (req: any, res: Response, next: NextFunction
             return;
         }
 
+        if (!oldPassword || !user.password) {
+            res.status(400).json({ error: 'Old password or stored password is missing' });
+            return;
+        }
         const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
         if (!isPasswordValid) {
             res.status(400).json({ error: 'Old password is incorrect' });
@@ -158,7 +165,7 @@ export const updateUser = async (req: any, res: Response, next: NextFunction): P
 export const createWave = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { id: userId } = req.user;
-        console.log(userId);
+        
 
 
         const { message, image } = req.body;
@@ -167,7 +174,7 @@ export const createWave = async (req: any, res: Response, next: NextFunction): P
 
         res.status(201).json({ wave: newWave, message: 'Wave created successfully' });
     } catch (error) {
-        next(error);
+       res.status(500).json({ message: `Error: ${error}` });
     }
 };
 
@@ -254,6 +261,168 @@ export const getLatestWaves = async (req: Request, res: Response, next: NextFunc
             res.status(200).json({ waves, message: "Latest Waves Found" });
         } else {
             res.status(404).json({ message: "No Waves Found" });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getAllActiveWaves = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const activeWaves = await Wave.findAll({ where: { status: true } });
+
+        if (activeWaves.length > 0) {
+            res.status(200).json({ waves: activeWaves, message: "Active Waves Found" });
+        } else {
+            res.status(404).json({ message: "No Active Waves Found" });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+//Comment
+export const createComment = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { commenterId, waveId, comment } = req.body;
+        const newComment = await Comment.create({
+            commenterId, waveId, comment, status: true,
+            commenterFirstName: '',
+            commenterLastName: ''
+        });
+
+        res.status(201).json({ comment: newComment, message: 'Comment created successfully' });
+    } catch (error) {
+        res.status(500).json({ message: `Error: ${error}` });
+    }
+};
+
+export const getCommentDetails = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const comment = await Comment.findOne({ where: { id } });
+
+        if (comment) {
+            res.status(200).json({ comment, message: "Comment Found" });
+        } else {
+            res.status(404).json({ message: "Comment Not Found" });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const updateComment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const { comment, status } = req.body;
+
+        const commentObj = await Comment.findOne({ where: { id } });
+        if (!commentObj) {
+            res.status(404).json({ error: 'Comment not found' });
+            return;
+        }
+
+        commentObj.comment = comment;
+        commentObj.status = status;
+        await commentObj.save();
+
+        res.status(200).json({ comment: commentObj, message: 'Comment updated successfully' });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const deleteComment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { id } = req.params;
+
+        const comment = await Comment.findOne({ where: { id } });
+        if (!comment) {
+            res.status(404).json({ error: 'Comment not found' });
+            return;
+        }
+
+        comment.deletedAt = new Date().toISOString();
+        await comment.save();
+
+        res.status(200).json({ message: 'Comment deleted successfully' });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getCommentsByWaveId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { waveId } = req.params;
+        const comments = await Comment.findAll({ where: { waveId } });
+
+        if (comments.length > 0) {
+            res.status(200).json({ comments, message: "Comments Found" });
+        } else {
+            res.status(404).json({ message: "No Comments Found for this Wave" });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+//Friends 
+export const sendFriendRequest = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { id: inviterId } = req.user;
+        const { inviteEmail, inviteMessage, inviteName } = req.body;
+
+
+        const newFriendRequest = await Friend.create({
+            inviterId, inviteEmail, inviteMessage, inviteName, status: false, isAccepted: false,
+            deletedAt: ''
+        });
+        sendFriendRequestMail(inviteEmail, inviteName);
+        res.status(201).json({ friendRequest: newFriendRequest, message: 'Friend Request sent successfully' });
+    } catch (error) {
+        res.status(500).json({ message: `Error: ${error}` });
+    }
+};
+ 
+    export const getFriendsList = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { id: userId } = req.user;
+            const friends = await Friend.findAll({ where: { inviterId: userId, isAccepted: true } });
+
+            if (friends.length > 0) {
+                res.status(200).json({ friends, message: "Friends list retrieved successfully" });
+            } else {
+                res.status(404).json({ message: "No friends found" });
+            }
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    export const getAllFriends = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const friends = await Friend.findAll({ where: { isAccepted: true } });
+
+            if (friends.length > 0) {
+                res.status(200).json({ friends, message: "All friends retrieved successfully" });
+            } else {
+                res.status(404).json({ message: "No friends found" });
+            }
+        } catch (error) {
+            next(error);
+        }
+    };
+    
+export const getFriendRequestDetails = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const friendRequest = await Friend.findOne({ where: { id } });
+
+        if (friendRequest) {
+            res.status(200).json({ friendRequest, message: "Friend Request Found" });
+        } else {
+            res.status(404).json({ message: "Friend Request Not Found" });
         }
     } catch (error) {
         next(error);

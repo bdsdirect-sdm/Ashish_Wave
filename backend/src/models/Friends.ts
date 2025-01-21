@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import  sequelize  from '../config/db';
+import sequelize from '../config/db';
 
 interface FriendAttributes {
     id: number;
@@ -12,7 +12,7 @@ interface FriendAttributes {
     deletedAt: string;
 }
 
-interface FriendCreationAttributes extends Optional<FriendAttributes, 'id'> {}
+interface FriendCreationAttributes extends Optional<FriendAttributes, 'id'> { }
 
 class Friend extends Model<FriendAttributes, FriendCreationAttributes> implements FriendAttributes {
     public id!: number;

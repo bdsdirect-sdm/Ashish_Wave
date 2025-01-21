@@ -5,11 +5,10 @@ import React from "react";
 
 interface OptionsModelProps {
     closeModel: () => void;
-    // id: string;
+    
     
 }
-// const decodedToken = JSON.parse(atob(localStorage.getItem("token")?.split(".")[1] || ""));
-// const id = decodedToken.id;
+
 
 
 const OptionsModel: React.FC<OptionsModelProps> = ({ closeModel }) => {

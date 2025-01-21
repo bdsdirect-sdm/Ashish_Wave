@@ -38,12 +38,20 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const [commentList, setCommentList] = useState<Comment[]>([]);
     const [isEdit, setIsEdit] = useState(false);
     const [commentId, setCommentId] = useState<string | null>(null);
-    const { id } = useParams<{ id: string }>();
+    const [id, setId] = useState<string | null>(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            const decodedToken: any = JSON.parse(atob(token.split('.')[1]));
+            setId(decodedToken.id);
+        }
+    }, []);
 
     const fetchComments = async () => {
         try {
             const response = await axios.get(
-                `localhost:3000/waves`,
+                `http://localhost:3000/getComment/${waveId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -54,18 +62,18 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
                 setCommentList(response.data.data);
             }
         } catch (err: any) {
-            toast.error(err.response?.data?.message || "Failed to fetch comments.", {
-                
-                autoClose: 300,
-            });
+            // toast.error(err.response?.data?.message || "Failed to fetch comments.", {
+            //     autoClose: 300,
+            // });
+            console.log(err.response?.data?.message || "Failed to fetch comments.");
         }
     };
 
     const postComment = async (comment: string) => {
         try {
             const response = await axios.post(
-                `http://127.0.0.5:3000/user/${id}/waves/comments`,
-                { waveId, comment },
+                `http://localhost:3000/createComment`,
+                { waveId, comment, commenterId: id },
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -75,13 +83,11 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
             if (response.data.status) {
                 setIsCommentPosted(!isCommentPosted);
                 toast.success(response.data.message, {
-                    
                     autoClose: 300,
                 });
             }
         } catch (err: any) {
             toast.error(err.response?.data?.message || "Failed to post comment.", {
-               
                 autoClose: 300,
             });
         }
@@ -90,7 +96,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const deleteComment = async (commentId: string) => {
         try {
             const response = await axios.delete(
-                `http://127.0.0.5:3000/user/${id}/waves/comments`,
+                `http://127.0.0.5:3000/deleteComment`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -101,13 +107,11 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
             if (response.data.status) {
                 setIsDeleted(!isDeleted);
                 toast.success(response.data.message, {
-                    
                     autoClose: 300,
                 });
             }
         } catch (err: any) {
             toast.error(err.response?.data?.message || "Failed to delete comment.", {
-                
                 autoClose: 300,
             });
         }
@@ -118,7 +122,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
 
         try {
             const response = await axios.put(
-                `http://127.0.0.5:3000/user/${id}/waves/comments`,
+                `http://127.0.0.5:3000/updateComment`,
                 { id: commentId, comment },
                 {
                     headers: {
@@ -129,13 +133,11 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
             if (response.data.status) {
                 setIsUpdated(!isUpdated);
                 toast.success(response.data.message, {
-                    position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: 300,
                 });
             }
         } catch (err: any) {
             toast.error(err.response?.data?.message || "Failed to update comment.", {
-                position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 300,
             });
         }

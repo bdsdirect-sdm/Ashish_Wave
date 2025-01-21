@@ -14,8 +14,8 @@ const FriendInfo: React.FC<FriendInfoProps> = ({ closeModel, friendId }) => {
 
     const fetchFriendDetail = async () => {
         try {
-            let response = await axios.get(
-                `http://127.0.0.5:3000/user/${friendId}/friend-details`,
+            const response = await axios.get(
+                `http://localhost:3000/allfriends`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -27,7 +27,6 @@ const FriendInfo: React.FC<FriendInfoProps> = ({ closeModel, friendId }) => {
             }
         } catch (err: any) {
             toast.error(err.response.data.message, {
-                position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 300,
             });
         }
@@ -65,3 +64,5 @@ const FriendInfo: React.FC<FriendInfoProps> = ({ closeModel, friendId }) => {
             </>
         )
     };
+
+    export default FriendInfo;

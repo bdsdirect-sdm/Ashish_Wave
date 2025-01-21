@@ -3,11 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Options from './Options';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const InviteFriends: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const counter = 1; // Replace with actual counter logic
+    const userName = localStorage.getItem('UserName');
 
     const Formik = useFormik({
         initialValues: {
@@ -21,7 +24,26 @@ const InviteFriends: React.FC = () => {
             message: Yup.string().required('Message is required')
         }),
         onSubmit: values => {
-            // Handle form submission
+            axios.post('http://localhost:3000/sendFriendRequest', 
+                {
+                    inviteName: values.name,
+                    inviteEmail: values.email,
+                    inviteMessage: values.message
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                }
+            )
+            .then(response => {
+                console.log('Friend invited successfully:', response.data);
+                toast.success('Friend invited successfully');
+            })
+            .catch(error => {
+                console.error('There was an error inviting the friend:', error);
+                toast.error('There was an error inviting the friend');
+            });
             console.log(values);
         }
     });
@@ -39,7 +61,7 @@ const InviteFriends: React.FC = () => {
                         <h2>Friends</h2>
                     </div>
                     <p id="friends-header-paragraph">
-                        Invites some friends, show them your Waves and
+                        Invites some friends {userName} , show them your Waves and
                         let’s see what they can do!
                     </p>
                     <div id="friends-container">

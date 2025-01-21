@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FriendInfo } from "./FriendInfo";
+import FriendInfo from "./FriendInfo";
 
 interface Request {
     id: string;
@@ -53,7 +53,7 @@ function FriendRequests({ isAccepted, setIsAccepted }: FriendRequestsProps) {
     const approveRequest = async (requestId: string) => {
         try {
             const response = await axios.put(
-                `http://127.0.0.5:3000/user/${id}/friend-requests`,
+                `http://localhost:3000/user/${id}/friend-requests`,
                 { id: requestId },
                 {
                     headers: {

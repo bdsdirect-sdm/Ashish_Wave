@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import Options from './Options';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const CreateWaves: React.FC = () => {
     const navigate = useNavigate();
@@ -18,6 +20,23 @@ const CreateWaves: React.FC = () => {
         },
         onSubmit: values => {
             // Handle form submission
+
+            console.log('Form values:', values);
+            axios.post('http://localhost:3000/createWave', values, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+
+                .then(response => {
+                    // console.log('Wave created successfully:', response.data);
+                    toast.success('Wave created successfully!');
+                    navigate('/dashboard');
+                })
+                .catch(error => {
+                    console.error('There was an error creating the wave!', error);
+                    toast.error('There was an error creating the wave!', error);
+                });
         },
         validate: values => {
             const errors: { message?: string } = {};
@@ -165,7 +184,7 @@ const CreateWaves: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <Options />
+            <Options isUpdated={false} />
         </div>
     );
 };

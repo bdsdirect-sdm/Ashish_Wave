@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./All.css";
 import OptionsModel from "./OptionsModel";
@@ -18,11 +18,6 @@ const Options: React.FC<OptionsProps> = ({ profileIcon, isUpdated }) => {
     const [userIcon, setUserIcon] = useState<string | undefined>();
     const [time, setTime] = useState<string>("");
     const navigate = useNavigate();
-    // const user = localStorage.getItem("user")
-    // const id = user ? JSON.parse(user).id : null;
-
-    // console.log(id);
-    // const id = localStorage.getItem("user_id");
 
     const closeModel = () => setOpenModel(false);
 
@@ -49,15 +44,15 @@ const Options: React.FC<OptionsProps> = ({ profileIcon, isUpdated }) => {
 
     const fetchIcon = async () => {
         try {
-            let response = await axios.get(`http://localhost:3000/user/`, {
+            const response = await axios.get(`http://localhost:3000/user/`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             });
-            console.log(response.data.user);
+            
             setUserName(response.data.user.first_name + " " + response.data.user.last_name);
             setUserIcon(response.data.user.profileIcon);
-            console.log(response.data.user);
+            localStorage.setItem("UserName", response.data.user.first_name + " " + response.data.user.last_name);
         } catch (err: any) {
             if (err.response.status === 401) {
                 localStorage.removeItem("token");
