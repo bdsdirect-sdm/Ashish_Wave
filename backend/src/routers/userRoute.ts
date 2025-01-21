@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUser, loginUser, getUserDetails, updatePassword, createWave, getWaveDetails, getLatestWaves, upsertPreference, updateUser, getAllActiveWaves, createComment, getCommentsByWaveId, getCommentDetails, updateComment, deleteComment, sendFriendRequest, getAllFriends } from "../controllers/userController";
+import { registerUser, loginUser, getUserDetails, updatePassword, createWave, getWaveDetails, getLatestWaves, upsertPreference, updateUser, getAllActiveWaves, createComment, getCommentsByWaveId, getCommentDetails, updateComment, deleteComment, sendFriendRequest, getAllFriends, updateUserprofileIcon } from "../controllers/userController";
 import loginValidation from "../middlewares/formValidation.ts/loginValidation";
 import userAuthMiddleware from "../middlewares/userAuth";
 
@@ -8,6 +8,7 @@ const router = Router();
 router.post("/register", registerUser);
 router.post("/login", loginValidation, loginUser);
 router.put('/updatePassword',userAuthMiddleware, updatePassword);
+router.put('/updateUserprofileIcon', userAuthMiddleware, updateUserprofileIcon);
 
 router.get('/user',userAuthMiddleware, getUserDetails);
 

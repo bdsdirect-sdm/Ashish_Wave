@@ -113,9 +113,10 @@ export const updatePassword = async (req: any, res: Response, next: NextFunction
 
 export const updateUserprofileIcon = [
     upload.single('profileIcon'),
-    async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    async (req: any, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const { id } = req.params;
+            const { id } = req.user;
+            console.log(req.user);
 
             const user = await User.findOne({ where: { id } });
             if (!user) {
@@ -413,7 +414,7 @@ export const sendFriendRequest = async (req: any, res: Response, next: NextFunct
             next(error);
         }
     };
-    
+
 export const getFriendRequestDetails = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { id } = req.params;

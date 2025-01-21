@@ -77,8 +77,15 @@ const Profile: React.FC = () => {
 
         try {
             // Post image logic here
+            const response = await axios.put('http://localhost:3000/updateUserprofileIcon', formData, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+
         } catch (err) {
             // Handle error here
+            console.error("Failed to post image", err);
         }
     };
 
