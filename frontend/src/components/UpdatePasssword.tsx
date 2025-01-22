@@ -87,7 +87,7 @@ function UpdatePassword() {
                         src="/left-arrow.png"
                         alt="Go Back"
                         onClick={() => {
-                            navigate(`/user/${id}`);
+                            navigate(-1);
                         }}
                     />
                     <h2>Change Password</h2>

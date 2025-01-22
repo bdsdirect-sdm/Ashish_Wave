@@ -33,7 +33,6 @@ const WavesList: React.FC = () => {
             if (response.data.waves) {
                 setWaveList(response.data.waves);
             }
-            console.log(response.data.waves);
         } catch (err: any) {
             toast.error(err.response.data.message, {
                 autoClose: 300,

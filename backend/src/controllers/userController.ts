@@ -118,7 +118,6 @@ export const updateUserprofileIcon = [
     async (req: any, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.user;
-            console.log(req.user);
 
             const user = await User.findOne({ where: { id } });
             if (!user) {
@@ -443,10 +442,9 @@ export const getFriendRequestDetails = async (req: any, res: Response, next: Nex
 
 
 export const upsertPreference = async (req: any, res: Response, next: NextFunction): Promise<void> => {
-    console.log("at upsertPreference");
+    
     try {
         const { userId } = req.user.id;
-        // console.log(req.user.id + "----------------------------------------");
         const {
             language,
             breakfast,

@@ -14,7 +14,6 @@ interface OptionsProps {
 }
 
 const Options: React.FC<OptionsProps> = ({  isUpdated }) => {
-    // console.log("peorororo "+profileIcon);   
     const [openModel, setOpenModel] = useState(false);
     const [userName, setUserName] = useState<string | null>(null);
     const [userIcon, setUserIcon] = useState<string | undefined>();
@@ -46,7 +45,7 @@ const Options: React.FC<OptionsProps> = ({  isUpdated }) => {
 
     const fetchIcon = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/user/`, {
+            const response = await axios.get(`http://localhost:3000/user`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },

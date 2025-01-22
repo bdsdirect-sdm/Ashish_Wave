@@ -53,7 +53,7 @@ function FriendRequests({ isAccepted, setIsAccepted }: FriendRequestsProps) {
     const approveRequest = async (requestId: string) => {
         try {
             const response = await axios.put(
-                `http://localhost:3000/user/${id}/friend-requests`,
+                `http://localhost:3000/friend-requests`,
                 { id: requestId },
                 {
                     headers: {

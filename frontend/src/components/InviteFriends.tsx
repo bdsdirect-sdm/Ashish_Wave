@@ -44,7 +44,7 @@ const InviteFriends: React.FC = () => {
                 console.error('There was an error inviting the friend:', error);
                 toast.error('There was an error inviting the friend');
             });
-            console.log(values);
+        
         }
     });
 
@@ -56,7 +56,7 @@ const InviteFriends: React.FC = () => {
                         <img
                             id="left-arrow"
                             src="/left-arrow.png"
-                            onClick={() => navigate(`/user/${id}/friends`)}
+                            onClick={() => navigate(-1)}
                         />
                         <h2>Friends</h2>
                     </div>
