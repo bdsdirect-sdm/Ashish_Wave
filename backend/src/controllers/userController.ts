@@ -157,7 +157,7 @@ export const updateUser = async (req: any, res: Response, next: NextFunction): P
         const { password, ...updatedUserWithoutPassword } = user.toJSON();
         res.status(200).json({ user: updatedUserWithoutPassword, message: 'User updated successfully' });
     } catch (error) {
-        console.log(error + "----------------------------------------")
+        console.log(error)
     }
 };
 

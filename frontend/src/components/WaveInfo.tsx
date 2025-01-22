@@ -52,7 +52,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const fetchComments = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:3000/getComment/${waveId}`,
+                `http://localhost:3000/getComments/${waveId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
