@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Options from './Options';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import  BASE_URL  from '../environment/env';
 
-interface ProfileParams {
-    id: string;
-}
+
 
 const Profile: React.FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -18,7 +17,7 @@ const Profile: React.FC = () => {
     const [first_name, setFirstName] = useState("");
     const [last_name, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [ssn, setSsn] = useState<string | null>(null);
+    const [ssn, setSsn] = useState<number | null>(null);
     const [phone_number, setPhoneNumber] = useState("");
     const [address1, setAddress1] = useState("");
     const [address2, setAddress2] = useState("");
@@ -31,7 +30,6 @@ const Profile: React.FC = () => {
     const [social, setSocial] = useState("");
     const [kids, setKids] = useState<number | null>(null);
     const [profileIcon, setProfileIcon] = useState<string | null>(null);
-    // const { id } = useParams<ProfileParams>();
     const [id, setId] = useState("")
     const navigate = useNavigate();
 
@@ -61,7 +59,6 @@ const Profile: React.FC = () => {
             setSocial(user.social || "");
             setKids(user.kids || null);
             setProfileIcon(user.profileIcon || null);
-            console.log(response.data.user);
         } catch (err) {
             console.error("Failed to fetch basic data", err);
         }
@@ -141,7 +138,7 @@ const Profile: React.FC = () => {
             first_name: first_name,
             last_name: last_name,
             email: email,
-            ssn: ssn ? ssn : "",
+            ssn: ssn ? ssn : null,
             phone_number: phone_number ? phone_number : "",
             address1: address1,
             address2: address2,
@@ -655,8 +652,8 @@ const Profile: React.FC = () => {
                 </div>
                 <div id="img-container">
                     <img
+                        src={profileIcon ? `${BASE_URL.BASE_URL}${profileIcon}` : "/default-profile.png"}
                         id="profile-user-icon"
-                        src={profileIcon || "/default-profile.png"}
                         alt="Profile"
                     />
                     <input

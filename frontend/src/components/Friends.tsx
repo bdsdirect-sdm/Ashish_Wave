@@ -7,7 +7,7 @@ const Friends: React.FC = () => {
     const [searchFriend, setSearchFriend] = useState([]);
     const [friendList, setFriendList] = useState([]);
     const [sortIcon, setSortIcon] = useState('/sort.png');
-
+    
     const handleFriendSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         // Implement search logic here
     };
@@ -15,6 +15,8 @@ const Friends: React.FC = () => {
     const handleFriendSort = () => {
         // Implement sort logic here
     };
+    
+    
 
     return (
         <div className="dashboard-wrapper">

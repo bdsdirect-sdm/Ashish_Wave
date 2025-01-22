@@ -11,7 +11,9 @@ const Dashboard: React.FC = () => {
     const adminName = "Admin"; // Replace with actual admin name logic
 
     const handleLogout = () => {
-        // Add logout logic here
+        
+        localStorage.removeItem("token");
+        window.location.href = "/login";
         console.log("Logout clicked");
     };
 

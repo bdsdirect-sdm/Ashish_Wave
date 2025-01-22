@@ -17,8 +17,8 @@ export const httpServer = createServer(app);
 app.use(cors());
 app.use(express.json());
 app.use("/", userRouter);
-// app.use("/uploads", express.static(path.join(__dirname, '../uploads')));
-sequelize.sync({ alter: true, force:false }).then(() => {
+app.use("/uploads", express.static(path.join(__dirname, '../uploads')));
+sequelize.sync({ alter: true, force: false }).then(() => {
   console.log('Database connected');
 
   httpServer.listen(Local.SERVER_PORT, () => {

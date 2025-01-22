@@ -27,7 +27,7 @@ const Login: React.FC = () => {
                     toast.success('Login successful!');
                     
                     localStorage.setItem("token", response.data.token);
-                    console.log(response);
+            
                     setTimeout(() => {
                         navigate('/dashboard');
                     }, 1000);

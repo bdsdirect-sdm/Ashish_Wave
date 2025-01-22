@@ -4,20 +4,42 @@ import { useFormik } from 'formik';
 import Options from './Options';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
+import BASE_URL from '../environment/env';
 
 const CreateWaves: React.FC = () => {
     const navigate = useNavigate();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const profilePhoto = ''; // Replace with actual profile photo logic
-    const name = ''; // Replace with actual name logic
+    const [profilePhoto, setProfilePhoto] = useState<string>('');
+    const[userName, setuserName] = useState<string>('');
     const selectedImageName = ''; // Replace with actual selected image name logic
-    const searchWaveList = []; // Replace with actual search wave list logic
-    const userName = ''; // Replace with actual user name logic
+    const searchWaveList = [];
+    // const userName = ''; // Replace with actual user name logic
 
+    const [userDetails, setUserDetails] = useState<any>(null);
+    console.log(userDetails);
+    useEffect(() => {
+        axios.get('http://localhost:3000/user', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        })
+        .then(response => {
+            setUserDetails(response.data.user);
+            setProfilePhoto(response.data.user.profileIcon);
+            setuserName(response.data.user.name);
+
+        })
+        .catch(error => {
+            console.error('There was an error fetching the user details!', error);
+        });
+    }, []);
     const Formik = useFormik({
         initialValues: {
             message: '',
         },
+
+
         onSubmit: values => {
             // Handle form submission
 
@@ -29,7 +51,6 @@ const CreateWaves: React.FC = () => {
             })
 
                 .then(response => {
-                    // console.log('Wave created successfully:', response.data);
                     toast.success('Wave created successfully!');
                     navigate('/dashboard');
                 })
@@ -55,6 +76,7 @@ const CreateWaves: React.FC = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
+        
     };
 
     const handleWaveSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +105,7 @@ const CreateWaves: React.FC = () => {
                     <div id="wave-img-container">
                         <img
                             id="profile-user-icon"
-                            src={profilePhoto ? profilePhoto : "/user.png"}
+                            src={profilePhoto ? `${BASE_URL.BASE_URL}${profilePhoto}` : "/user.png"}
                             alt="icon"
                         />
                         <div id="upload-photo">

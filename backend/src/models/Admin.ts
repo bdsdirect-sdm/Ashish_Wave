@@ -6,7 +6,7 @@ interface AdminAttributes {
     name: string;
     email: string;
     password: string;
-    status: boolean;
+    status: string;
     deletedAt: string | null;
 }
 
@@ -17,7 +17,7 @@ class Admin extends Model<AdminAttributes, AdminCreationAttributes> implements A
     public name!: string;
     public email!: string;
     public password!: string;
-    public status!: boolean;
+    public status!: string;
     public deletedAt!: string | null;
 
     public readonly createdAt!: Date;
@@ -45,7 +45,7 @@ Admin.init(
             allowNull: false,
         },
         status: {
-            type: DataTypes.BOOLEAN,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         deletedAt: {

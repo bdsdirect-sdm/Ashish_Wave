@@ -1,6 +1,6 @@
 import "./All.css";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -39,6 +39,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const [isEdit, setIsEdit] = useState(false);
     const [commentId, setCommentId] = useState<string | null>(null);
     const [id, setId] = useState<string | null>(null);
+    
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -158,7 +159,11 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
         initialValues: { comment: "" },
         validationSchema: schema,
         onSubmit: (values, { resetForm }) => {
-            isEdit ? updateComment(values.comment) : postComment(values.comment);
+            if (isEdit) {
+                updateComment(values.comment);
+            } else {
+                postComment(values.comment);
+            }
             resetForm();
             setAddComment(false);
         },

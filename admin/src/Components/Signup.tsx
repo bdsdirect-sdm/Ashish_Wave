@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './signup.css';
+// import axios from  'axios';
+import api from '../api/axiosInstance';
+
+
+import { toast } from 'react-toastify';
 
 const Signup: React.FC = () => {
     const Formik = useFormik({
@@ -23,7 +28,18 @@ const Signup: React.FC = () => {
             name: Yup.string().required('Required')
         }),
         onSubmit: values => {
-            console.log(values);
+            api.post('http://localhost:3000/signup', values)
+                .then(response => {
+                    console.log('Signup successful!', response);
+                    toast.success('Signup successful!');
+                    setTimeout(() => {
+                        // navigator('/login');
+                    }, 1000);
+                })
+                .catch(error => {
+                    toast.error('Signup failed. Please try again.');
+                    console.error('There was an error signing up!', error);
+                });
         }
     });
 
@@ -87,7 +103,7 @@ const Signup: React.FC = () => {
                     />
                     <br />
                     {Formik.errors.confirm_password &&
-                    Formik.touched.confirm_password ? (
+                        Formik.touched.confirm_password ? (
                         <p className="form-errors">
                             {Formik.errors.confirm_password}
                         </p>

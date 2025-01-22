@@ -8,10 +8,11 @@ import User from '../models/User';
 import bcrypt from 'bcrypt';
 import multer from 'multer';
 import path from 'path';
-import upload from '../utils/multer';
+import uploadProfile from '../utils/uploadProfile';
 import Wave from '../models/Waves';
 import Friend from '../models/Friends';
 import { sendFriendRequestMail } from '../utils/mailer';
+import { uploadWave } from '../utils/uploadWave';
 
 
 
@@ -69,7 +70,8 @@ export const getUserDetails = async (req: any, res: Response): Promise<void> => 
         const { id } = req.user;
         const user = await User.findOne({ where: { id } });
         if (user) {
-            const { password, ...userWithoutPassword } = user.toJSON();
+            const { password,...userWithoutPassword } = user.toJSON();
+            // const updatedProfileIcon = user.profileIcon ? `http://localhost:3000/${user.profileIcon}` : '';
             res.status(200).json({ user: userWithoutPassword, message: "User Found" });
         } else {
             res.status(404).json({ message: "User Not Found" });
@@ -112,7 +114,7 @@ export const updatePassword = async (req: any, res: Response, next: NextFunction
 
 
 export const updateUserprofileIcon = [
-    upload.single('profileIcon'),
+    uploadProfile.single('profileIcon'),
     async (req: any, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.user;
@@ -163,17 +165,23 @@ export const updateUser = async (req: any, res: Response, next: NextFunction): P
 
 //wave
 
-export const createWave = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+export const createWave = async (req: any, res: Response): Promise<void> => {
     try {
         const { id: userId } = req.user;
-        
+        const { message } = req.body;
 
+        uploadWave.single('image')(req, res, async (err: any) => {
+            if (err) {
+                res.status(400).json({ error: err.message });
+                return;
+            }
 
-        const { message, image } = req.body;
+            const image = req.file ? req.file.path : '';
 
-        const newWave = await Wave.create({ message, image, status: true, userId });
+            const newWave = await Wave.create({ message, image, status: true, userId });
 
-        res.status(201).json({ wave: newWave, message: 'Wave created successfully' });
+            res.status(201).json({ wave: newWave, message: 'Wave created successfully' });
+        });
     } catch (error) {
        res.status(500).json({ message: `Error: ${error}` });
     }
@@ -408,22 +416,23 @@ export const sendFriendRequest = async (req: any, res: Response, next: NextFunct
             if (friends.length > 0) {
                 res.status(200).json({ friends, message: "All friends retrieved successfully" });
             } else {
-                res.status(404).json({ message: "No friends found" });
+                res.status(200).json({ message: "No friends found" });
             }
+
         } catch (error) {
             next(error);
         }
     };
 
-export const getFriendRequestDetails = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const getFriendRequestDetails = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { id } = req.params;
+        const { id } = req.user;
         const friendRequest = await Friend.findOne({ where: { id } });
 
         if (friendRequest) {
             res.status(200).json({ friendRequest, message: "Friend Request Found" });
         } else {
-            res.status(404).json({ message: "Friend Request Not Found" });
+            res.status(201).json({ message: "Friend Request Not Found" });
         }
     } catch (error) {
         next(error);

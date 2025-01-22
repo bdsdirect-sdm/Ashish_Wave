@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { registerUser, loginUser, getUserDetails, updatePassword, createWave, getWaveDetails, getLatestWaves, upsertPreference, updateUser, getAllActiveWaves, createComment, getCommentsByWaveId, getCommentDetails, updateComment, deleteComment, sendFriendRequest, getAllFriends, updateUserprofileIcon } from "../controllers/userController";
+import { registerUser, loginUser, getUserDetails, updatePassword, createWave, getWaveDetails, getLatestWaves, upsertPreference, updateUser, getAllActiveWaves, createComment, getCommentsByWaveId, getCommentDetails, updateComment, deleteComment, sendFriendRequest, getAllFriends, updateUserprofileIcon, getFriendRequestDetails } from "../controllers/userController";
 import loginValidation from "../middlewares/formValidation.ts/loginValidation";
 import userAuthMiddleware from "../middlewares/userAuth";
+// import { adminLogin, adminSignup } from "../controllers/adminController";
 
 const router = Router();
 
@@ -34,10 +35,16 @@ router.get("/preference", userAuthMiddleware, upsertPreference);
 
 router.post("/sendFriendRequest", userAuthMiddleware, sendFriendRequest);
 router.get("/allfriends",userAuthMiddleware, getAllFriends);
+router.get("/getFriendRequest",userAuthMiddleware, getFriendRequestDetails);
 // router.post("/Send_Friend", userAuthMiddleware, Send_Friend);
 // router.get("/Get_Friends", userAuthMiddleware, Get_Friends);
 // router.get("/Friend_Details/:id", userAuthMiddleware, Friend_Details);
 
 // router.get("/Get_Preference", userAuthMiddleware, Get_Preference);
 // router.post("/Create_Preference", userAuthMiddleware, Create_Preference);
+
+//Admin
+    // router.post("/signup", adminSignup);
+    // router.post("/admin/login", adminLogin);
+
 export default router;

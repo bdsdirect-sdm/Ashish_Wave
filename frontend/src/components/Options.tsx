@@ -5,14 +5,16 @@ import OptionsModel from "./OptionsModel";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Slide } from "react-toastify";
+// import { Slide } from "react-toastify";
+import BASE_URL from "../environment/env";
 
 interface OptionsProps {
     profileIcon?: string;
     isUpdated: boolean;
 }
 
-const Options: React.FC<OptionsProps> = ({ profileIcon, isUpdated }) => {
+const Options: React.FC<OptionsProps> = ({  isUpdated }) => {
+    // console.log("peorororo "+profileIcon);   
     const [openModel, setOpenModel] = useState(false);
     const [userName, setUserName] = useState<string | null>(null);
     const [userIcon, setUserIcon] = useState<string | undefined>();
@@ -45,11 +47,11 @@ const Options: React.FC<OptionsProps> = ({ profileIcon, isUpdated }) => {
     const fetchIcon = async () => {
         try {
             const response = await axios.get(`http://localhost:3000/user/`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
             });
-            
+
             setUserName(response.data.user.first_name + " " + response.data.user.last_name);
             setUserIcon(response.data.user.profileIcon);
             localStorage.setItem("UserName", response.data.user.first_name + " " + response.data.user.last_name);
@@ -157,11 +159,8 @@ const Options: React.FC<OptionsProps> = ({ profileIcon, isUpdated }) => {
                 <img
                     id="user-icon"
                     src={
-                        profileIcon
-                            ? profileIcon
-                            : userIcon
-                            ? userIcon
-                            : "/user.png"
+
+                        userIcon ? `${BASE_URL.BASE_URL}${userIcon}` : "/default-profile.png"
                     }
                     onClick={() => setOpenModel(!openModel)}
                 ></img>

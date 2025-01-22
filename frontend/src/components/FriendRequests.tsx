@@ -28,7 +28,7 @@ function FriendRequests({ isAccepted, setIsAccepted }: FriendRequestsProps) {
     const fetchRequests = async () => {
         try {
             const response = await axios.get(
-                `http://127.0.0.5:3000/user/${id}/friend-requests`,
+                `http://localhost:3000/getFriendRequest`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,

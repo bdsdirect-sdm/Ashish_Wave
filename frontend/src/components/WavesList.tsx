@@ -19,6 +19,7 @@ const WavesList: React.FC = () => {
 
     const fetchWaves = async () => {
         try {
+            
             const response = await axios.get(
                 `http://localhost:3000/active_Waves`,
                 {
@@ -29,10 +30,10 @@ const WavesList: React.FC = () => {
                     },
                 }
             );
-            console.log(response);
             if (response.data.waves) {
                 setWaveList(response.data.waves);
             }
+            console.log(response.data.waves);
         } catch (err: any) {
             toast.error(err.response.data.message, {
                 autoClose: 300,
@@ -89,11 +90,11 @@ const WavesList: React.FC = () => {
             {openModel && (
                 <WaveInfo
                     closeModel={closeModel}
-                    waveId={waveId}
-                    waveImage={waveImage}
-                    waveMessage={waveMessage}
-                    posterIcon={posterIcon}
-                    posterName={posterName}
+                    waveId={waveId || ""}
+                    waveImage={waveImage || ""}
+                    waveMessage={waveMessage || ""}
+                    posterIcon={posterIcon || ""}
+                    posterName={posterName || ""}
                 />
             )}
         </div>

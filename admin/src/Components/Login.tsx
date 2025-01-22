@@ -1,5 +1,7 @@
 import './login.css'
 import { useFormik } from 'formik'
+import { Link } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import * as Yup from 'yup';
 
 const Login = () => {
@@ -80,13 +82,13 @@ const Login = () => {
             </button>
             <p id="register-paragraph">
                 Don't have an account?&nbsp;
-                {/* <Link to="/" id="register-link">
+                <Link to="/signup" id="register-link">
                     Register
-                </Link> */}
+                </Link>
             </p>
         </form>
     </div>
-    {/* <ToastContainer /> */}
+    <ToastContainer />
 </div></>
   )
 }
