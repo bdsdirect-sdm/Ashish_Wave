@@ -70,7 +70,7 @@ export const getUserDetails = async (req: any, res: Response): Promise<void> => 
         const { id } = req.user;
         const user = await User.findOne({ where: { id } });
         if (user) {
-            const { password,...userWithoutPassword } = user.toJSON();
+            const { password, ...userWithoutPassword } = user.toJSON();
             // const updatedProfileIcon = user.profileIcon ? `http://localhost:3000/${user.profileIcon}` : '';
             res.status(200).json({ user: userWithoutPassword, message: "User Found" });
         } else {
@@ -81,7 +81,7 @@ export const getUserDetails = async (req: any, res: Response): Promise<void> => 
     }
 };
 
-export const updatePassword = async (req: any, res: Response, next: NextFunction): Promise<void>  => {
+export const updatePassword = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { id } = req.user;
         const { oldPassword, newPassword } = req.body;
@@ -144,7 +144,7 @@ export const updateUser = async (req: any, res: Response, next: NextFunction): P
     try {
         const { id } = req.user;
         const updateData = req.body;
-        
+
 
         const user = await User.findOne({ where: { id } });
         if (!user) {
@@ -182,7 +182,7 @@ export const createWave = async (req: any, res: Response): Promise<void> => {
             res.status(201).json({ wave: newWave, message: 'Wave created successfully' });
         });
     } catch (error) {
-       res.status(500).json({ message: `Error: ${error}` });
+        res.status(500).json({ message: `Error: ${error}` });
     }
 };
 
@@ -392,36 +392,41 @@ export const sendFriendRequest = async (req: any, res: Response, next: NextFunct
         res.status(500).json({ message: `Error: ${error}` });
     }
 };
- 
-    export const getFriendsList = async (req: any, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const { id: userId } = req.user;
-            const friends = await Friend.findAll({ where: { inviterId: userId, isAccepted: true } });
 
-            if (friends.length > 0) {
-                res.status(200).json({ friends, message: "Friends list retrieved successfully" });
-            } else {
-                res.status(404).json({ message: "No friends found" });
-            }
-        } catch (error) {
-            next(error);
+export const getFriendsList = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { id: userId } = req.user;
+        const friends = await Friend.findAll({ where: { inviterId: userId, isAccepted: true } });
+
+        if (friends.length > 0) {
+            res.status(200).json({ friends, message: "Friends list retrieved successfully" });
+        } else {
+            res.status(404).json({ message: "No friends found" });
         }
-    };
+    } catch (error) {
+        next(error);
+    }
+};
 
-    export const getAllFriends = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const friends = await Friend.findAll({ where: { isAccepted: true } });
+export const getAllFriends = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { id: inviterId } = req.user;
+        console.log(inviterId);
 
-            if (friends.length > 0) {
-                res.status(200).json({ friends, message: "All friends retrieved successfully" });
-            } else {
-                res.status(200).json({ message: "No friends found" });
-            }
+        const friends = await Friend.findAll({ where: { inviterId } });
+        // if (friends.length > 0) {
+        //     res.status(200).json({ friends, message: "All friends retrieved successfully" });
+        // } else {
+        //     res.status(200).json({ message: "No friends found" });
+        // }
+        console.log(friends);
 
-        } catch (error) {
-            next(error);
-        }
-    };
+        res.status(200).json({ friends, message: "All friends retrieved successfully" });
+
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const getFriendRequestDetails = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -442,9 +447,9 @@ export const getFriendRequestDetails = async (req: any, res: Response, next: Nex
 
 
 export const upsertPreference = async (req: any, res: Response, next: NextFunction): Promise<void> => {
-    
+
     try {
-        const { userId } = req.user.id;
+        const userId = req.user.id;
         const {
             language,
             breakfast,

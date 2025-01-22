@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import Options from './Options';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 interface PreferenceFormValues {
     language: string;
@@ -52,12 +53,18 @@ const Preference: React.FC = () => {
         initialValues,
         onSubmit: (values) => {
             // Handle form submissio
-            axios.post(`/preference`, values)
+            axios.post(`http://localhost:3000/preference`, values, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                }
+            })
                 .then(response => {
-                    console.log('Preferences updated successfully:', response.data);
+                    // console.log('Preferences updated successfully:', response.data);
+                    toast.success('Preferences updated successfully!');
                 })
                 .catch(error => {
-                    console.error('There was an error updating the preferences!', error);
+                    // console.error('There was an error updating the preferences!', error);
+                    toast.error('There was an error updating the preferences!');
                 });
             
         },
@@ -267,6 +274,7 @@ const Preference: React.FC = () => {
                                             id="glucose"
                                             className="glucose"
                                             name="bloodGlucose"
+                                            placeholder='mmol/L'
                                             type="radio"
                                             onChange={Formik.handleChange}
                                             onBlur={Formik.handleBlur}

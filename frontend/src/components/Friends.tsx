@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Options from './Options';
+import axios from 'axios';
 
 const Friends: React.FC = () => {
     const navigate = useNavigate();
     const [searchFriend, setSearchFriend] = useState([]);
     const [friendList, setFriendList] = useState([]);
     const [sortIcon, setSortIcon] = useState('/sort.png');
-    
+
     const handleFriendSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         // Implement search logic here
     };
@@ -15,8 +16,26 @@ const Friends: React.FC = () => {
     const handleFriendSort = () => {
         // Implement sort logic here
     };
-    
-    
+    const getFriends = async () => {
+        const response = await axios.get(`http://localhost:3000/allfriends`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        console.log(response);
+
+
+        if (response && response.data.status) {
+            setFriendList(response.data.data.friends);
+        }
+    }
+
+    useEffect(() => {
+        getFriends();
+    }, []);
+
+    console.log("friend list----------->", friendList);
+
 
     return (
         <div className="dashboard-wrapper">
@@ -65,7 +84,7 @@ const Friends: React.FC = () => {
                             </button>
                         </div>
                         <div id="parent-user">
-                            {searchFriend.map((item, key) => (
+                            {searchFriend.map((item: any, key) => (
                                 <div
                                     key={key}
                                     id="invited-user-container"
