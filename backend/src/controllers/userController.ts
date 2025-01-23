@@ -418,19 +418,14 @@ export const getFriendsList = async (req: any, res: Response, next: NextFunction
 
 export const getAllFriends = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { id: inviterId } = req.user;
-        console.log(inviterId);
-
+        const inviterId = req.user.id;
+        console.log(inviterId, "inviterId");
         const friends = await Friend.findAll({ where: { inviterId } });
-        // if (friends.length > 0) {
-        //     res.status(200).json({ friends, message: "All friends retrieved successfully" });
-        // } else {
-        //     res.status(200).json({ message: "No friends found" });
-        // }
-        // console.log(friends);
-
-        res.status(200).json({ friends, message: "All friends retrieved successfully" });
-
+        if (friends.length > 0) {
+            res.status(200).json({ friends, message: "All friends retrieved successfully" });
+        } else {
+            res.status(200).json({ message: "No friends found" });
+        }
     } catch (error) {
         next(error);
     }
@@ -455,7 +450,7 @@ export const getFriendRequestDetails = async (req: any, res: Response, next: Nex
 
 
 export const upsertPreference = async (req: any, res: Response, next: NextFunction): Promise<void> => {
-    console.log(req.body, "req.body--------------");
+    // console.log(req.body, "req.body--------------");
     try {
         const userId = req.user.id;
         const {
