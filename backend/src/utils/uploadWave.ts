@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
     const ext = path.extname(file.originalname).toLowerCase();
     if(ext === '.jpeg' || ext === '.jpg' || ext === '.png')
     {
-      cb(null, 'uploads/waves/images/');
+      cb(null, 'uploads/waves/photos/');
     } else {
         cb(null, 'uploads/waves/videos/');
     }

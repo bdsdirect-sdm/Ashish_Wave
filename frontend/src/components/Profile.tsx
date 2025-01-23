@@ -73,12 +73,15 @@ const Profile: React.FC = () => {
         formData.append("profileIcon", file);
 
         try {
-            // Post image logic here
             const response = await axios.put('http://localhost:3000/updateUserprofileIcon', formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             });
+            if (response.status === 200) {
+                setProfileIcon(response.data.profileIcon);
+                toast.success("Profile icon updated successfully!");
+            }
 
         } catch (err) {
             // Handle error here
@@ -148,7 +151,7 @@ const Profile: React.FC = () => {
         };
 
         const updateBasicDetails = async (values: typeof basicValues) => {
-            // Update basic details logic here
+
             try {
                 const response = await axios.put('http://localhost:3000/Update_User', values, {
                     headers: {
@@ -663,7 +666,7 @@ const Profile: React.FC = () => {
                         onChange={handleImageChange}
                         accept="image/*"
                     />
-                    <button onClick={handleShowImageInput}>Change Profile Picture</button>
+                    <button id='change-pic' onClick={handleShowImageInput}>Change Picture</button>
                 </div>
                 {isBasicDetails ? <BasicDetails /> : <PersonalDetails />}
             </div>

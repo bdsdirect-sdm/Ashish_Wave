@@ -66,34 +66,35 @@ Preference.init(
         language: {
             type: DataTypes.STRING,
             allowNull: false,
+            defaultValue: 'English',
         },
         breakfast: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         lunch: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         dinner: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         wakeTime: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         bedTime: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         weight: {
             type: DataTypes.ENUM('Kg', 'lbs'),
-            allowNull: false,
+            allowNull: true,
         },
         height: {
             type: DataTypes.ENUM('cm', 'ft/inches'),
-            allowNull: false,
+            allowNull: true,
         },
         bloodGlucose: {
             type: DataTypes.ENUM('mmo/l', 'mg/dl'),
@@ -114,22 +115,27 @@ Preference.init(
         systemEmails: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: true,
         },
         memberServiceEmails: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: true,
         },
         sms: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: true,
         },
         phoneCall: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: true,
         },
         post: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: true,
         },
     },
     {

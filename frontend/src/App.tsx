@@ -8,8 +8,6 @@ import  Profile  from './components/Profile';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import UpdatePassword from './components/UpdatePasssword';
-// import WaveInfo from './components/WaveInfo';
-// import WavesList from './components/WavesList';
 import Preference from './components/Preference';
 import CreateWaves from './components/CreateWaves';
 import Friends from './components/Friends';
@@ -19,6 +17,18 @@ function App() {
   const router = createBrowserRouter([
     { path: '/', element: <Signup /> },
     {path: '/login', element: <Login />},
+    // {
+    //   path: '*',
+    //   element: localStorage.getItem('token') ? <Dashboard /> : <Login />,
+    // },
+    // {
+    //   path: '/signup',  
+    //   element: localStorage.getItem('token') ? <Dashboard /> : <Signup />,
+    // },
+    // {
+    //   path: '/login',
+    //   element: localStorage.getItem('token') ? <Dashboard /> : <Login />,
+    // },
     {path: '/dashboard', element: <Dashboard />},
     {path: '/profile', element: <Profile />}, 
     {path: '/preferences', element: <Preference />},

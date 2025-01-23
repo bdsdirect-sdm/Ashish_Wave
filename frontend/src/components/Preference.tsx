@@ -59,17 +59,34 @@ const Preference: React.FC = () => {
                 }
             })
                 .then(response => {
-                    // console.log('Preferences updated successfully:', response.data);
                     toast.success('Preferences updated successfully!');
                 })
                 .catch(error => {
-                    // console.error('There was an error updating the preferences!', error);
                     toast.error('There was an error updating the preferences!');
                 });
-            
+            console.log(values, 'values');
         },
     });
 
+
+    // const fatchPreference = () => {
+    //     axios.get(`http://localhost:3000/preference`, {
+    //         headers: {
+    //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //         }
+    //     })
+    //         .then(response => {
+    //             const data = response.data;
+    //             Formik.setValues(data);
+    //         })
+    //         .catch(() => {
+    //             toast.error('There was an error fetching the preferences!');
+    //         });
+    // };
+
+    React.useEffect(() => {
+        // fatchPreference();
+    }, []);
     return (
         <div className="dashboard-wrapper">
             <div className="user-wrapper">

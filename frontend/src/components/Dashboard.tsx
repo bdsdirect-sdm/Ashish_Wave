@@ -17,10 +17,10 @@ const Dashboard: React.FC = () => {
 
                     <WavesList />
                     <FriendList isAccepted={isAccepted} />
-                    <FriendRequests
+                    {/* <FriendRequests
                         isAccepted={isAccepted}
                         setIsAccepted={setIsAccepted}
-                    />
+                    /> */}
                 </div>
             </div>
             <Options isUpdated={false} />

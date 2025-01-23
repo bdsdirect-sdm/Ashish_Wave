@@ -43,6 +43,7 @@ const Options: React.FC<OptionsProps> = ({  isUpdated }) => {
         return () => clearInterval(intervalId);
     }, []);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchIcon = async () => {
         try {
             const response = await axios.get(`http://localhost:3000/user`, {
@@ -70,7 +71,7 @@ const Options: React.FC<OptionsProps> = ({  isUpdated }) => {
 
     useEffect(() => {
         fetchIcon();
-    }, [isUpdated]);
+    }, [fetchIcon, isUpdated]);
 
     return (
         <div id="parent-user">
@@ -169,7 +170,7 @@ const Options: React.FC<OptionsProps> = ({  isUpdated }) => {
                         {userName}
                     </p>
                 </div>
-                {openModel && <OptionsModel closeModel={closeModel} id={id} />}
+                {openModel && <OptionsModel closeModel={closeModel} />}
             </div>
             <ToastContainer />
         </div>

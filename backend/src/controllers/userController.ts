@@ -167,7 +167,6 @@ export const updateUser = async (req: any, res: Response, next: NextFunction): P
 export const createWave = async (req: any, res: Response): Promise<void> => {
     try {
         const { id: userId } = req.user;
-        const { message } = req.body;
 
         uploadWave.single('image')(req, res, async (err: any) => {
             if (err) {
@@ -175,7 +174,14 @@ export const createWave = async (req: any, res: Response): Promise<void> => {
                 return;
             }
 
+            const { message } = req.body;
+            if (!message) {
+                res.status(400).json({ error: 'Message is required' });
+                return;
+            }
+
             const image = req.file ? req.file.path : '';
+            console.log(image, "image");
 
             const newWave = await Wave.create({ message, image, status: true, userId });
 
@@ -185,6 +191,8 @@ export const createWave = async (req: any, res: Response): Promise<void> => {
         res.status(500).json({ message: `Error: ${error}` });
     }
 };
+
+
 
 
 export const getWaveDetails = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -419,7 +427,7 @@ export const getAllFriends = async (req: any, res: Response, next: NextFunction)
         // } else {
         //     res.status(200).json({ message: "No friends found" });
         // }
-        console.log(friends);
+        // console.log(friends);
 
         res.status(200).json({ friends, message: "All friends retrieved successfully" });
 
@@ -447,7 +455,7 @@ export const getFriendRequestDetails = async (req: any, res: Response, next: Nex
 
 
 export const upsertPreference = async (req: any, res: Response, next: NextFunction): Promise<void> => {
-
+    console.log(req.body, "req.body--------------");
     try {
         const userId = req.user.id;
         const {
