@@ -2,6 +2,8 @@ import "./All.css";
 import { useEffect, useState } from "react";
 // import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
+// import { BASE_URL } from "";
+import BASE_URL from '../environment/env';
 import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -28,8 +30,8 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     waveId,
     waveImage,
     waveMessage,
-    posterIcon,
-    posterName,
+    // posterIcon,
+    // posterName,
 }) => {
     const [addComment, setAddComment] = useState(false);
     const [isCommentPosted, setIsCommentPosted] = useState(false);
@@ -38,8 +40,9 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const [commentList, setCommentList] = useState<Comment[]>([]);
     const [isEdit, setIsEdit] = useState(false);
     const [commentId, setCommentId] = useState<string | null>(null);
-    const [id, setId] = useState<string | null>(null);
-    
+    const [id, setId] = useState<string | undefined>(undefined);
+    const [posterIcon, setPosterIcon] = useState<string | null>(null);
+    const [posterName, setPosterName] = useState<string | null>(null);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -69,6 +72,31 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
             console.log(err.response?.data?.message || "Failed to fetch comments.");
         }
     };
+
+
+    const fetchUser = async (id: string) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:3000/user`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                }
+            );
+
+            if (response.data?.status) {
+                setPosterIcon(response.data.data.profileIcon);
+                setPosterName(`${response.data.data.firstName} ${response.data.data.lastName}`);
+
+            }
+
+        } catch (err: any) {
+            toast.error(err.response?.data?.message || "Failed to fetch user.", {
+                autoClose: 300,
+            });
+        }
+    }
 
     const postComment = async (comment: string) => {
         try {
@@ -146,7 +174,10 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
 
     useEffect(() => {
         fetchComments();
-    }, [isCommentPosted, isDeleted, isUpdated]);
+        if (id) {
+            fetchUser(id);
+        }
+    }, [isCommentPosted, isDeleted, isUpdated, id]);
 
     const schema = Yup.object({
         comment: Yup.string()
@@ -185,45 +216,45 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
                             <p id="creator-name">{posterName}</p>
                         </div>
                     </div>
-                    <div id="wave-details">
-                        <img src={waveImage} alt="wave" />
-                        <p>{waveMessage}</p>
-                    </div>
-                    <div id="comments-section">
-                        <h2>Comments</h2>
-                        {commentList.map((comment) => (
-                            <div key={comment.id} className="comment">
-                                <p>{comment.comment}</p>
-                                <button onClick={() => deleteComment(comment.id)}>Delete</button>
-                                <button
-                                    onClick={() => {
-                                        setCommentId(comment.id);
-                                        setIsEdit(true);
-                                    }}
-                                >
-                                    Edit
-                                </button>
-                            </div>
-                        ))}
-                        {commentList.length === 0 && <p>No comments yet!</p>}
-                    </div>
-                    {addComment && (
-                        <form onSubmit={formik.handleSubmit}>
-                            <textarea
-                                id="comment"
-                                name="comment"
-                                value={formik.values.comment}
-                                onChange={formik.handleChange}
-                                placeholder="Add your comment"
-                            />
-                            {formik.errors.comment && <p>{formik.errors.comment}</p>}
-                            <button type="submit">{isEdit ? "Update" : "Post"}</button>
-                        </form>
-                    )}
-                    <button onClick={() => setAddComment(!addComment)}>
-                        {addComment ? "Cancel" : "Add Comment"}
-                    </button>
+                    <span id="image-height-line"></span>
+                    <div id="image">
+                        <img src={`${BASE_URL.BASE_URL}${waveImage}`} alt="wave" /></div>
+                    <p>{waveMessage}</p>
                 </div>
+                <div id="comments-section">
+                    <h2>Comments</h2>
+                    {commentList.map((comment) => (
+                        <div key={comment.id} className="comment">
+                            <p>{comment.comment}</p>
+                            <button onClick={() => deleteComment(comment.id)}>Delete</button>
+                            <button
+                                onClick={() => {
+                                    setCommentId(comment.id);
+                                    setIsEdit(true);
+                                }}
+                            >
+                                Edit
+                            </button>
+                        </div>
+                    ))}
+                    {commentList.length === 0 && <p>No comments yet!</p>}
+                </div>
+                {addComment && (
+                    <form onSubmit={formik.handleSubmit}>
+                        <textarea
+                            id="comment"
+                            name="comment"
+                            value={formik.values.comment}
+                            onChange={formik.handleChange}
+                            placeholder="Add your comment"
+                        />
+                        {formik.errors.comment && <p>{formik.errors.comment}</p>}
+                        <button type="submit">{isEdit ? "Update" : "Post"}</button>
+                    </form>
+                )}
+                <button onClick={() => setAddComment(!addComment)}>
+                    {addComment ? "Cancel" : "Add Comment"}
+                </button>
             </div>
         </>
     );
