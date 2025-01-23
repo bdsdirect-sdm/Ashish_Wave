@@ -30,6 +30,7 @@ const WavesList: React.FC = () => {
                     },
                 }
             );
+            console.log(response.data,"response");
             if (response.data.waves) {
                 setWaveList(response.data.waves);
             }
