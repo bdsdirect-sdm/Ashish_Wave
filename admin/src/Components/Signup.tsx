@@ -1,17 +1,19 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './signup.css';
 // import axios from  'axios';
+
 import api from '../api/axiosInstance';
 
 
 import { toast } from 'react-toastify';
 
 const Signup: React.FC = () => {
+    const navigate = useNavigate();
     const Formik = useFormik({
         initialValues: {
             email: '',
@@ -33,7 +35,7 @@ const Signup: React.FC = () => {
                     console.log('Signup successful!', response);
                     toast.success('Signup successful!');
                     setTimeout(() => {
-                        // navigator('/login');
+                        navigate('/login');
                     }, 1000);
                 })
                 .catch(error => {

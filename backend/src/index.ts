@@ -29,8 +29,6 @@ app.use("/uploads", express.static(path.join(__dirname, '../uploads'), {
 }));
 sequelize.sync({ alter: true }).then(async () => {
   console.log('Database connected');
-  // const friends = await Friend.findByPk(1);
-  // console.log(friends?.dataValues, "..............dfsdf.....")
   httpServer.listen(Local.SERVER_PORT, () => {
     console.log(`Server is running on port ${Local.SERVER_PORT}`);
   });

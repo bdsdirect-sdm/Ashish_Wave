@@ -24,7 +24,7 @@ const InviteFriends: React.FC = () => {
             message: Yup.string().required('Message is required')
         }),
         onSubmit: values => {
-            axios.post('http://localhost:3000/sendFriendRequest', 
+            axios.post('http://localhost:3000/sendFriendRequest',
                 {
                     inviteName: values.name,
                     inviteEmail: values.email,
@@ -36,15 +36,16 @@ const InviteFriends: React.FC = () => {
                     }
                 }
             )
-            .then(response => {
-                console.log('Friend invited successfully:', response.data);
-                toast.success('Friend invited successfully');
-            })
-            .catch(error => {
-                console.error('There was an error inviting the friend:', error);
-                toast.error('There was an error inviting the friend');
-            });
-        
+                .then(response => {
+                    console.log('Friend invited successfully:', response.data);
+                    toast.success('Friend invited successfully');
+                    navigate(-1);
+                })
+                .catch(error => {
+                    console.error('There was an error inviting the friend:', error);
+                    toast.error('There was an error inviting the friend');
+                });
+
         }
     });
 
@@ -88,7 +89,7 @@ const InviteFriends: React.FC = () => {
                                             />
                                         </div>
                                         {Formik.errors.name &&
-                                        Formik.touched.name ? (
+                                            Formik.touched.name ? (
                                             <p className="form-errors">
                                                 {Formik.errors.name}
                                             </p>
@@ -110,7 +111,7 @@ const InviteFriends: React.FC = () => {
                                             />
                                         </div>
                                         {Formik.errors.email &&
-                                        Formik.touched.email ? (
+                                            Formik.touched.email ? (
                                             <p className="form-errors">
                                                 {Formik.errors.email}
                                             </p>
@@ -132,7 +133,7 @@ const InviteFriends: React.FC = () => {
                                         />
                                     </div>
                                     {Formik.errors.message &&
-                                    Formik.touched.message ? (
+                                        Formik.touched.message ? (
                                         <p className="form-errors">
                                             {Formik.errors.message}
                                         </p>
@@ -151,7 +152,7 @@ const InviteFriends: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <Options isUpdated={false}  />
+            <Options isUpdated={false} />
         </div>
     );
 };

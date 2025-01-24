@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { registerUser, loginUser, getUserDetails, updatePassword, createWave, getWaveDetails, getLatestWaves, upsertPreference, updateUser, getAllActiveWaves, createComment, getCommentsByWaveId, getCommentDetails, updateComment, deleteComment, updateUserprofileIcon, getAllFriends, getFriendRequestDetails, getFriendsList, sendFriendRequest, getFriendDetails } from "../controllers/userController";
+import { registerUser, loginUser, getUserDetails, updatePassword, createWave, getWaveDetails, getLatestWaves, upsertPreference, updateUser, getAllActiveWaves, createComment, getCommentsByWaveId, getCommentDetails, updateComment, deleteComment, updateUserprofileIcon, getAllFriends, getFriendRequestDetails, getFriendsList, sendFriendRequest, getFriendDetails, deleteWave } from "../controllers/userController";
 import loginValidation from "../middlewares/formValidation.ts/loginValidation";
 import userAuthMiddleware from "../middlewares/userAuth";
+import { adminSignup, adminLogin, getUserAndWaveCounts, getAllUsers, changeUserStatus, deleteUser, getUserAllDetails, getWaveList, changeWaveStatus, updateWave, getUserCount } from "../controllers/adminController";
 // import { adminLogin, adminSignup } from "../controllers/adminController";
 
 const router = Router();
@@ -46,7 +47,17 @@ router.get("/getFriendInfo/:id", userAuthMiddleware, getFriendDetails);
 // router.post("/Create_Preference", userAuthMiddleware, Create_Preference);
 
 //Admin
-// router.post("/signup", adminSignup);
-// router.post("/admin/login", adminLogin);
-
+router.post("/signup", adminSignup);
+router.post("/admin/login", adminLogin);
+// router.get("/userCount", getUserAndWaveCounts);
+router.get("/Count", userAuthMiddleware, getUserAndWaveCounts);
+router.get("/allusers", userAuthMiddleware, getAllUsers);
+router.post("/changeUserStatus", userAuthMiddleware, changeUserStatus);
+router.delete("/deleteUser", userAuthMiddleware, deleteUser);
+router.get("/userDetails/:id", userAuthMiddleware, getUserAllDetails);
+router.get("/WaveList", userAuthMiddleware, getWaveList);
+router.post("/changeWaveStatus", userAuthMiddleware, changeWaveStatus);
+router.delete("/deleteWave", userAuthMiddleware, deleteWave);
+router.post("/updateWave", userAuthMiddleware, updateWave);
+router.get("/userCount", userAuthMiddleware, getUserCount);
 export default router;

@@ -8,10 +8,10 @@ import './dashboard.css';
 
 const Dashboard: React.FC = () => {
     const [isChanged, setIsChanged] = useState(false);
-    const adminName = "Admin"; // Replace with actual admin name logic
+    const adminName = localStorage.getItem('adminName');
 
     const handleLogout = () => {
-        
+
         localStorage.removeItem("token");
         window.location.href = "/login";
         console.log("Logout clicked");
