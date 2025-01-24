@@ -8,7 +8,7 @@ import FriendRequests from "./FriendRequests";
 // import FriendRequests from "./FriendRequests";
 
 const Dashboard: React.FC = () => {
-    const [isAccepted, setIsAccepted] = useState<boolean>(false);
+    // const [isAccepted, setIsAccepted] = useState<boolean>(true);
 
     return (
         <div className="dashboard-wrapper">
@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
                 <div className="user-wrapper">
 
                     <WavesList />
-                    <FriendList isAccepted={isAccepted} />
+                    <FriendList />
                     {/* <FriendRequests
                         isAccepted={isAccepted}
                         setIsAccepted={setIsAccepted}

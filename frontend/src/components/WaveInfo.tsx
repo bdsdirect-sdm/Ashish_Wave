@@ -8,6 +8,8 @@ import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// import "./waveInfo.css"
+/* eslint-disable */
 
 interface WaveInfoProps {
     closeModel: () => void;
@@ -125,7 +127,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const deleteComment = async (commentId: string) => {
         try {
             const response = await axios.delete(
-                `http://127.0.0.5:3000/deleteComment`,
+                `http://localhost:3000/deleteComment`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -151,7 +153,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
 
         try {
             const response = await axios.put(
-                `http://127.0.0.5:3000/updateComment`,
+                `http://localhost:3000/updateComment`,
                 { id: commentId, comment },
                 {
                     headers: {
@@ -216,6 +218,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
                             <p id="creator-name">{posterName}</p>
                         </div>
                     </div>
+                    
                     <span id="image-height-line"></span>
                     <div id="image">
                         <img src={`${BASE_URL.BASE_URL}${waveImage}`} alt="wave" /></div>
@@ -260,4 +263,4 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     );
 };
 
-export default WaveInfo;
+export default WaveInfo;    

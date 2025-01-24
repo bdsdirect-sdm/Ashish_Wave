@@ -1,11 +1,11 @@
-    import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Options from './Options';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import  BASE_URL  from '../environment/env';
+import BASE_URL from '../environment/env';
 
 
 
@@ -655,7 +655,7 @@ const Profile: React.FC = () => {
                 </div>
                 <div id="img-container">
                     <img
-                        src={profileIcon ? `${BASE_URL.BASE_URL}${profileIcon}` : "/default-profile.png"}
+                        src={profileIcon ? `${BASE_URL.BASE_URL}${profileIcon}` : "/user.png"}
                         id="profile-user-icon"
                         alt="Profile"
                     />

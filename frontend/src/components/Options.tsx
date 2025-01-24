@@ -13,7 +13,7 @@ interface OptionsProps {
     isUpdated: boolean;
 }
 
-const Options: React.FC<OptionsProps> = ({  isUpdated }) => {
+const Options: React.FC<OptionsProps> = ({ isUpdated }) => {
     const [openModel, setOpenModel] = useState(false);
     const [userName, setUserName] = useState<string | null>(null);
     const [userIcon, setUserIcon] = useState<string | undefined>();
@@ -160,7 +160,7 @@ const Options: React.FC<OptionsProps> = ({  isUpdated }) => {
                     id="user-icon"
                     src={
 
-                        userIcon ? `${BASE_URL.BASE_URL}${userIcon}` : "/default-profile.png"
+                        userIcon ? `${BASE_URL.BASE_URL}${userIcon}` : "/user.png"
                     }
                     onClick={() => setOpenModel(!openModel)}
                 ></img>

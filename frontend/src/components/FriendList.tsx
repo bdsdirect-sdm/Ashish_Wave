@@ -8,15 +8,11 @@ import FriendInfo from "./FriendInfo";
 interface Friend {
     friendId: string;
     icon?: string;
-    name: string;
-    email: string;
+    inviteName: string;
+    inviteEmail: string;
 }
 
-interface FriendListProps {
-    isAccepted: boolean;
-}
-
-const FriendList: React.FC<FriendListProps> = ({ isAccepted }) => {
+const FriendList: React.FC = () => {
     const [friends, setFriends] = useState<Friend[]>([]);
     const [openModel, setOpenModel] = useState<boolean>(false);
     const [friendId, setFriendId] = useState<string | null>(null);
@@ -32,8 +28,8 @@ const FriendList: React.FC<FriendListProps> = ({ isAccepted }) => {
                     },
                 }
             );
-            if (response && response.data.status) {
-                setFriends(response.data.data);
+            if (response && response?.data?.friends) {
+                setFriends(response.data.friends);
             }
         } catch (err: any) {
             if (err.response?.status === 404) {
@@ -44,8 +40,8 @@ const FriendList: React.FC<FriendListProps> = ({ isAccepted }) => {
 
     useEffect(() => {
         fetchFriends();
-    }, [isAccepted]);
-
+    }, []);
+    console.log(friends, "friendsList=-=-=-=-=-");
     return (
         <div id="friends-container-main">
             <p id="friend-label">Friends</p>
@@ -55,14 +51,14 @@ const FriendList: React.FC<FriendListProps> = ({ isAccepted }) => {
                         key={item.friendId}
                         id="invited-user-container"
                         onClick={() => {
-                            setFriendId(item.friendId);
-                            setOpenModel(true);
+                            setFriendId(item.friendId); // Set the selected friend's id
+                            setOpenModel(true);  // Open the FriendInfo modal
                         }}
                     >
                         <img src={item.icon || "/user.png"} alt="Friend Icon" />
                         <div id="invited-user-detail">
-                            <p id="user-name">{item.name}</p>
-                            <p id="user-email">{item.email}</p>
+                            <p id="user-name">{item.inviteName}</p>
+                            <p id="user-email">{item.inviteEmail}</p>
                         </div>
                         <div
                             id="status"

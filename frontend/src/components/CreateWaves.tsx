@@ -21,14 +21,14 @@ const CreateWaves: React.FC = () => {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         })
-        .then(response => {
-            setUserDetails(response.data.user);
-            setProfilePhoto(response.data.user.profileIcon);
-            setUserName(response.data.user.name);
-        })
-        .catch(error => {
-            console.error('There was an error fetching the user details!', error);
-        });
+            .then(response => {
+                setUserDetails(response.data.user);
+                setProfilePhoto(response.data.user.profileIcon);
+                setUserName(response.data.user.name);
+            })
+            .catch(error => {
+                console.error('There was an error fetching the user details!', error);
+            });
     }, []);
 
     const formik = useFormik({

@@ -11,10 +11,17 @@ const Friends: React.FC = () => {
 
     const handleFriendSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         // Implement search logic here
+        const query = event.target.value.toLowerCase();
+        const filteredFriends = friendList.filter((friend: any) =>
+            friend.inviteName.toLowerCase().includes(query) ||
+            friend.inviteEmail.toLowerCase().includes(query)
+        );
+        setSearchFriend(filteredFriends);
     };
 
     const handleFriendSort = () => {
         // Implement sort logic here
+
     };
     const getFriends = async () => {
         const response = await axios.get(`http://localhost:3000/allfriends`, {
@@ -22,19 +29,16 @@ const Friends: React.FC = () => {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         });
-        console.log(response);
-
-
-        if (response && response.data.status) {
-            setFriendList(response.data.data.friends);
+        if (response && response.data.friends) {
+            setFriendList(response.data.friends);
+            // setSearchFriend(response.data.friends);
         }
     }
 
     useEffect(() => {
         getFriends();
     }, []);
-
-    console.log("friend list----------->", friendList);
+    console.log(friendList, "friendsList=-=-=-=-=-");
 
 
     return (
@@ -97,8 +101,8 @@ const Friends: React.FC = () => {
                                         alt="Icon"
                                     />
                                     <div id="invited-user-detail">
-                                        <p id="user-name">{item.name}</p>
-                                        <p id="user-email">{item.email}</p>
+                                        <p id="user-name">{item.inviteName}</p>
+                                        <p id="user-email">{item.inviteEmail}</p>
                                     </div>
                                     <div
                                         id="status"

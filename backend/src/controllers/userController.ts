@@ -10,7 +10,7 @@ import multer from 'multer';
 import path from 'path';
 import uploadProfile from '../utils/uploadProfile';
 import Wave from '../models/Waves';
-import Friend from '../models/Friends';
+import Friend from '../models/Friend';
 import { sendFriendRequestMail } from '../utils/mailer';
 import { uploadWave } from '../utils/uploadWave';
 
@@ -416,35 +416,54 @@ export const getFriendsList = async (req: any, res: Response, next: NextFunction
     }
 };
 
+
+
 export const getAllFriends = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const inviterId = req.user.id;
-        console.log(inviterId, "inviterId");
+        const { id: inviterId } = req.user;
         const friends = await Friend.findAll({ where: { inviterId } });
-        if (friends.length > 0) {
+
+        if (friends && friends.length > 0) {
             res.status(200).json({ friends, message: "All friends retrieved successfully" });
         } else {
-            res.status(200).json({ message: "No friends found" });
+            res.status(404).json({ message: `No friends found for inviterId: ${inviterId}` });
         }
     } catch (error) {
         next(error);
     }
 };
 
+
 export const getFriendRequestDetails = async (req: any, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { id } = req.user;
+        const { id } = req.params; // Extract friend request ID from params
         const friendRequest = await Friend.findOne({ where: { id } });
 
         if (friendRequest) {
             res.status(200).json({ friendRequest, message: "Friend Request Found" });
         } else {
-            res.status(201).json({ message: "Friend Request Not Found" });
+            res.status(404).json({ message: "Friend Request Not Found" });
         }
     } catch (error) {
         next(error);
     }
 };
+
+export const getFriendDetails = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const friend = await Friend.findOne({ where: { id } });
+
+        if (friend) {
+            res.status(200).json({ friend, message: "Friend details retrieved successfully" });
+        } else {
+            res.status(404).json({ message: "Friend not found" });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 
 
@@ -503,3 +522,6 @@ export const upsertPreference = async (req: any, res: Response, next: NextFuncti
         res.status(500).json({ message: `Error -----------------------: ${error}` });
     }
 };
+
+
+
