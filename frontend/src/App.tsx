@@ -12,9 +12,11 @@ import Preference from './components/Preference';
 import CreateWaves from './components/CreateWaves';
 import Friends from './components/Friends';
 import InviteFriends from './components/InviteFriends';
+import DynamicForm from './components/Form';
 
 function App() {
   const router = createBrowserRouter([
+    {path: '/Form', element: <DynamicForm />},
     { path: '/', element: <Signup /> },
     {path: '/login', element: <Login />},
     // {

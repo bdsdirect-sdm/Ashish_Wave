@@ -52,7 +52,6 @@ const Preference: React.FC = () => {
     const Formik = useFormik({
         initialValues,
         onSubmit: (values) => {
-            // Handle form submissio
             axios.post(`http://localhost:3000/preference`, values, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
