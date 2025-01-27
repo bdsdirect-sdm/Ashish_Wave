@@ -248,9 +248,11 @@ const Profile: React.FC = () => {
                         <div id="basic-detail-1">
                             <label htmlFor="email">
                                 Enter Email <em>*</em>
+
                             </label>
                             <br />
                             <input
+                                disabled
                                 id="email"
                                 name="email"
                                 type="email"
@@ -258,6 +260,7 @@ const Profile: React.FC = () => {
                                 onChange={BasicFormik.handleChange}
                                 onBlur={BasicFormik.handleBlur}
                                 value={BasicFormik.values.email}
+
                             />
                             {BasicFormik.errors.email &&
                                 BasicFormik.touched.email ? (
