@@ -7,11 +7,6 @@ import { createServer } from 'http';
 
 import path from 'path';
 import cors from 'cors';
-// import Friend from './models/Friend';
-import User from './models/User';
-import Wave from './models/Waves';
-import User1 from './models/User1';
-import Friend from './models/Friend';
 
 const app = express();
 

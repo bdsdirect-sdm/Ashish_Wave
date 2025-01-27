@@ -1,13 +1,13 @@
 import "./All.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WaveInfo from "./WaveInfo";
 
 const WavesList: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+    // const { id } = useParams<{ id: string }>();
     const [openModel, setOpenModel] = useState(false);
     const [waveList, setWaveList] = useState<any[]>([]);
     const closeModel = () => setOpenModel(false);

@@ -24,8 +24,8 @@ router.get("/Latest_Waves", userAuthMiddleware, getLatestWaves);
 
 
 router.post("/createComment", userAuthMiddleware, createComment);
-router.get("/getComments/:id", userAuthMiddleware, getCommentDetails);
-router.get("/getComment/:WaveId", userAuthMiddleware, getCommentsByWaveId);
+// router.get("/getComments/:id", userAuthMiddleware, getCommentDetails);
+router.get("/getComment/:id", userAuthMiddleware, getCommentsByWaveId);
 router.put("/updateComment", userAuthMiddleware, updateComment);
 router.delete("/deleteComment", userAuthMiddleware, deleteComment);
 

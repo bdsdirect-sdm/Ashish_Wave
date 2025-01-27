@@ -10,7 +10,6 @@ const Friends: React.FC = () => {
     const [sortIcon, setSortIcon] = useState('/sort.png');
 
     const handleFriendSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        // Implement search logic here
         const query = event.target.value.toLowerCase();
         const filteredFriends = friendList.filter((friend: any) =>
             friend.inviteName.toLowerCase().includes(query) ||
@@ -20,7 +19,7 @@ const Friends: React.FC = () => {
     };
 
     const handleFriendSort = () => {
-        // Implement sort logic here
+        
 
     };
     const getFriends = async () => {
@@ -38,7 +37,7 @@ const Friends: React.FC = () => {
     useEffect(() => {
         getFriends();
     }, []);
-    console.log(friendList, "friendsList=-=-=-=-=-");
+    // console.log(friendList, "friendsList=-=-=-=-=-");
 
 
     return (
@@ -122,7 +121,9 @@ const Friends: React.FC = () => {
                             ))}
                             {friendList.length === 0 ? (
                                 <h1 id="no-friends">Not invited yet!</h1>
-                            ) : null}
+                            ) : 
+                            null}
+                            
                         </div>
                     </div>
                 </div>

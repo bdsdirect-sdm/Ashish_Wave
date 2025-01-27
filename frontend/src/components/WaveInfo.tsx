@@ -57,21 +57,25 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const fetchComments = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:3000/getComments/${waveId}`,
+
+                `${BASE_URL.BASE_URL}getComment/${waveId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
+
                 }
             );
-            if (response.data?.status) {
-                setCommentList(response.data.data);
+            console.log(commentList, "commentList=-=-=-=-=-=-");
+            if (response?.data) {
+                setCommentList(response.data.comments);
+
             }
         } catch (err: any) {
             // toast.error(err.response?.data?.message || "Failed to fetch comments.", {
             //     autoClose: 300,
             // });
-            console.log(err.response?.data?.message || "Failed to fetch comments.");
+            // console.log(err.response?.data?.message || "Failed to fetch comments.");
         }
     };
 
@@ -79,7 +83,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const fetchUser = async (id: string) => {
         try {
             const response = await axios.get(
-                `http://localhost:3000/user`,
+                `${BASE_URL.BASE_URL}user`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -103,7 +107,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const postComment = async (comment: string) => {
         try {
             const response = await axios.post(
-                `http://localhost:3000/createComment`,
+                `${BASE_URL.BASE_URL}createComment`,
                 { waveId, comment, commenterId: id },
                 {
                     headers: {
@@ -127,7 +131,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
     const deleteComment = async (commentId: string) => {
         try {
             const response = await axios.delete(
-                `http://localhost:3000/deleteComment`,
+                `${BASE_URL.BASE_URL}deleteComment`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -153,7 +157,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
 
         try {
             const response = await axios.put(
-                `http://localhost:3000/updateComment`,
+                `${BASE_URL.BASE_URL}updateComment`,
                 { id: commentId, comment },
                 {
                     headers: {
@@ -201,7 +205,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
             setAddComment(false);
         },
     });
-
+    // console.log(commentList, "commentList=-=-=-=-=-=-");
     return (
         <>
             <div id="model-wrapper" onClick={closeModel}></div>
@@ -218,7 +222,7 @@ const WaveInfo: React.FC<WaveInfoProps> = ({
                             <p id="creator-name">{posterName}</p>
                         </div>
                     </div>
-                    
+
                     <span id="image-height-line"></span>
                     <div id="image">
                         <img src={`${BASE_URL.BASE_URL}${waveImage}`} alt="wave" /></div>

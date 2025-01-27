@@ -370,8 +370,9 @@ export const deleteComment = async (req: Request, res: Response, next: NextFunct
 
 export const getCommentsByWaveId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { waveId } = req.params;
-        const comments = await Comment.findAll({ where: { waveId } });
+        const waveId = req.params.id;
+
+        const comments = await Comment.findAll({ where: { waveId: waveId } });
 
         if (comments.length > 0) {
             res.status(200).json({ comments, message: "Comments Found" });

@@ -10,14 +10,14 @@ interface DashboardOverviewProps {
     totalWaves: number;
 }
 
-const DashboardOverview: React.FC<DashboardOverviewProps> = ({ totalUser, activeUser, inactiveUser, totalWaves }) => {
+const DashboardOverview: React.FC<DashboardOverviewProps> = () => {
 
 
     const [userCounts, setUserCounts] = useState({ totalUser: 0, activeUser: 0, inactiveUser: 0 });
     const [waveCount, setWaveCount] = useState(0);
 
     useEffect(() => {
-        const fetchUserCounts = async () => {
+        const fetchUserCounts = async () => {   
             try {
                 const response = await fetch('http://localhost:3000/Count', {
                     headers: {
@@ -74,6 +74,7 @@ const DashboardOverview: React.FC<DashboardOverviewProps> = ({ totalUser, active
         </div>
     );
 };
+
 // return (
 //     <div id="overview-page">
 //         <div id="overview-heading">
