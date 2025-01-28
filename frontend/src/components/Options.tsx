@@ -146,6 +146,7 @@ const Options: React.FC<OptionsProps> = ({ isUpdated }) => {
                     id="logout"
                     onClick={() => {
                         localStorage.removeItem("token");
+                        localStorage.clear();
                         navigate("/login");
                     }}
                 >

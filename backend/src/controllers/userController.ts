@@ -470,7 +470,6 @@ export const getFriendDetails = async (req: any, res: Response, next: NextFuncti
 
 
 export const upsertPreference = async (req: any, res: Response, next: NextFunction): Promise<void> => {
-    // console.log(req.body, "req.body--------------");
     try {
         const userId = req.user.id;
         const {
@@ -507,11 +506,11 @@ export const upsertPreference = async (req: any, res: Response, next: NextFuncti
             cholesterol,
             bloodPressure,
             distance,
-            systemEmails,
-            memberServiceEmails,
-            sms,
-            phoneCall,
-            post
+            systemEmails: systemEmails === 'true' || systemEmails === true,
+            memberServiceEmails: memberServiceEmails === 'true' || memberServiceEmails === true,
+            sms: sms === 'true' || sms === true,
+            phoneCall: phoneCall === 'true' || phoneCall === true,
+            post: post === 'true' || post === true
         });
 
         if (created) {
@@ -523,6 +522,3 @@ export const upsertPreference = async (req: any, res: Response, next: NextFuncti
         res.status(500).json({ message: `Error -----------------------: ${error}` });
     }
 };
-
-
-

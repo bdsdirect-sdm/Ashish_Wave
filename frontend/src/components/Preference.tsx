@@ -49,7 +49,7 @@ const Preference: React.FC = () => {
         post: false
     };
 
-    const Formik = useFormik({
+    const formik = useFormik({
         initialValues,
         onSubmit: (values) => {
             axios.post(`http://localhost:3000/preference`, values, {
@@ -67,25 +67,29 @@ const Preference: React.FC = () => {
         },
     });
 
-
-    // const fatchPreference = () => {
-    //     axios.get(`http://localhost:3000/preference`, {
-    //         headers: {
-    //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //         }
-    //     })
-    //         .then(response => {
-    //             const data = response.data;
-    //             Formik.setValues(data);
-    //         })
-    //         .catch(() => {
-    //             toast.error('There was an error fetching the preferences!');
-    //         });
-    // };
+    const fetchPreference = () => {
+        axios.get(`http://localhost:3000/preference`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }
+        })
+            .then(response => {
+                const data = response.data;
+                console.log(data, 'data=-=-=-=-=-=-==-=-=-=-');
+                formik.setValues({
+                    ...initialValues,
+                    ...data
+                });
+            })
+            .catch(() => {
+                toast.error('There was an error fetching the preferences!');
+            });
+    };
 
     React.useEffect(() => {
-        // fatchPreference();
+        fetchPreference();
     }, []);
+
     return (
         <div className="dashboard-wrapper">
             <div className="user-wrapper">
@@ -101,7 +105,7 @@ const Preference: React.FC = () => {
                     <h2>Preferences</h2>
                 </div>
                 <div id="preferences-container">
-                    <form id="preference-form" onSubmit={Formik.handleSubmit}>
+                    <form id="preference-form" onSubmit={formik.handleSubmit}>
                         <div id="preference-details">
                             <div id="preference-1">
                                 <label htmlFor="language">Language</label>
@@ -109,9 +113,9 @@ const Preference: React.FC = () => {
                                 <select
                                     id="language"
                                     name="language"
-                                    onChange={Formik.handleChange}
-                                    onBlur={Formik.handleBlur}
-                                    value={Formik.values.language}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.language}
                                 >
                                     <option value="English">English</option>
                                     <option value="Hindi">Hindi</option>
@@ -125,9 +129,9 @@ const Preference: React.FC = () => {
                                     className="breakfast"
                                     name="breakfast"
                                     type="time"
-                                    onChange={Formik.handleChange}
-                                    onBlur={Formik.handleBlur}
-                                    value={Formik.values.breakfast}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.breakfast}
                                 />
                             </div>
                         </div>
@@ -140,9 +144,9 @@ const Preference: React.FC = () => {
                                     className="lunch"
                                     name="lunch"
                                     type="time"
-                                    onChange={Formik.handleChange}
-                                    onBlur={Formik.handleBlur}
-                                    value={Formik.values.lunch}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.lunch}
                                 />
                             </div>
                             <div id="preference-2">
@@ -153,9 +157,9 @@ const Preference: React.FC = () => {
                                     className="dinner"
                                     name="dinner"
                                     type="time"
-                                    onChange={Formik.handleChange}
-                                    onBlur={Formik.handleBlur}
-                                    value={Formik.values.dinner}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.dinner}
                                 />
                             </div>
                         </div>
@@ -168,9 +172,9 @@ const Preference: React.FC = () => {
                                     className="wake-time"
                                     name="wakeTime"
                                     type="time"
-                                    onChange={Formik.handleChange}
-                                    onBlur={Formik.handleBlur}
-                                    value={Formik.values.wakeTime}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.wakeTime}
                                 />
                             </div>
                             <div id="preference-2">
@@ -181,9 +185,9 @@ const Preference: React.FC = () => {
                                     className="bed-time"
                                     name="bedTime"
                                     type="time"
-                                    onChange={Formik.handleChange}
-                                    onBlur={Formik.handleBlur}
-                                    value={Formik.values.bedTime}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.bedTime}
                                 />
                             </div>
                         </div>
@@ -198,12 +202,10 @@ const Preference: React.FC = () => {
                                             className="weight"
                                             name="weight"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="Kg"
-                                            checked={
-                                                Formik.values.weight === "Kg"
-                                            }
+                                            checked={formik.values.weight === "Kg"}
                                         />
                                         <p>Kg</p>
                                     </div>
@@ -213,12 +215,10 @@ const Preference: React.FC = () => {
                                             className="weight"
                                             name="weight"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="lbs"
-                                            checked={
-                                                Formik.values.weight === "lbs"
-                                            }
+                                            checked={formik.values.weight === "lbs"}
                                         />
                                         <p>lbs</p>
                                     </div>
@@ -234,12 +234,10 @@ const Preference: React.FC = () => {
                                             className="height"
                                             name="height"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="cm"
-                                            checked={
-                                                Formik.values.height === "cm"
-                                            }
+                                            checked={formik.values.height === "cm"}
                                         />
                                         <p>cm</p>
                                     </div>
@@ -249,13 +247,10 @@ const Preference: React.FC = () => {
                                             className="height"
                                             name="height"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="ft/inches"
-                                            checked={
-                                                Formik.values.height ===
-                                                "ft/inches"
-                                            }
+                                            checked={formik.values.height === "ft/inches"}
                                         />
                                         <p>ft/inches</p>
                                     </div>
@@ -264,9 +259,7 @@ const Preference: React.FC = () => {
                         </div>
                         <div id="preference-details">
                             <div id="preference-1">
-                                <label htmlFor="bloodGlucose">
-                                    Blood Glucose
-                                </label>
+                                <label htmlFor="bloodGlucose">Blood Glucose</label>
                                 <br />
                                 <div id="radio-button">
                                     <div id="radio-button-input">
@@ -275,13 +268,10 @@ const Preference: React.FC = () => {
                                             className="glucose"
                                             name="bloodGlucose"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="mmo/l"
-                                            checked={
-                                                Formik.values.bloodGlucose ===
-                                                "mmo/l"
-                                            }
+                                            checked={formik.values.bloodGlucose === "mmo/l"}
                                         />
                                         <p>mmo/l</p>
                                     </div>
@@ -290,15 +280,11 @@ const Preference: React.FC = () => {
                                             id="glucose"
                                             className="glucose"
                                             name="bloodGlucose"
-                                            placeholder='mmol/L'
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="mg/dl"
-                                            checked={
-                                                Formik.values.bloodGlucose ===
-                                                "mg/dl"
-                                            }
+                                            checked={formik.values.bloodGlucose === "mg/dl"}
                                         />
                                         <p>mg/dl</p>
                                     </div>
@@ -314,13 +300,10 @@ const Preference: React.FC = () => {
                                             className="cholesterol"
                                             name="cholesterol"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="mmo/l"
-                                            checked={
-                                                Formik.values.cholesterol ===
-                                                "mmo/l"
-                                            }
+                                            checked={formik.values.cholesterol === "mmo/l"}
                                         />
                                         <p>mmo/l</p>
                                     </div>
@@ -330,13 +313,10 @@ const Preference: React.FC = () => {
                                             className="cholesterol"
                                             name="cholesterol"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="mg/dl"
-                                            checked={
-                                                Formik.values.cholesterol ===
-                                                "mg/dl"
-                                            }
+                                            checked={formik.values.cholesterol === "mg/dl"}
                                         />
                                         <p>mg/dl</p>
                                     </div>
@@ -345,9 +325,7 @@ const Preference: React.FC = () => {
                         </div>
                         <div id="preference-details">
                             <div id="preference-1">
-                                <label htmlFor="bloodPressure">
-                                    Blood Pressure
-                                </label>
+                                <label htmlFor="bloodPressure">Blood Pressure</label>
                                 <br />
                                 <div id="radio-button">
                                     <div id="radio-button-input">
@@ -356,13 +334,10 @@ const Preference: React.FC = () => {
                                             className="blood-pressure"
                                             name="bloodPressure"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="kPa"
-                                            checked={
-                                                Formik.values.bloodPressure ===
-                                                "kPa"
-                                            }
+                                            checked={formik.values.bloodPressure === "kPa"}
                                         />
                                         <p>kPa</p>
                                     </div>
@@ -372,13 +347,10 @@ const Preference: React.FC = () => {
                                             className="blood-pressure"
                                             name="bloodPressure"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="mmHg"
-                                            checked={
-                                                Formik.values.bloodPressure ===
-                                                "mmHg"
-                                            }
+                                            checked={formik.values.bloodPressure === "mmHg"}
                                         />
                                         <p>mmHg</p>
                                     </div>
@@ -394,12 +366,10 @@ const Preference: React.FC = () => {
                                             className="distance"
                                             name="distance"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="km"
-                                            checked={
-                                                Formik.values.distance === "km"
-                                            }
+                                            checked={formik.values.distance === "km"}
                                         />
                                         <p>km</p>
                                     </div>
@@ -409,13 +379,10 @@ const Preference: React.FC = () => {
                                             className="distance"
                                             name="distance"
                                             type="radio"
-                                            onChange={Formik.handleChange}
-                                            onBlur={Formik.handleBlur}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
                                             value="miles"
-                                            checked={
-                                                Formik.values.distance ===
-                                                "miles"
-                                            }
+                                            checked={formik.values.distance === "miles"}
                                         />
                                         <p>miles</p>
                                     </div>
@@ -427,56 +394,44 @@ const Preference: React.FC = () => {
                             <p id="communication">Communication Type</p>
                             <span></span>
                         </div>
-                        <div
-                            id="preference-details"
-                            className="communication-details"
-                        >
+                        <div id="preference-details" className="communication-details">
                             <div id="preference-1">
-                                <label htmlFor="SystemEmails">
-                                    System Emails
-                                </label>
+                                <label htmlFor="SystemEmails">System Emails</label>
                                 <label className="switch">
                                     <input
                                         type="checkbox"
                                         name="systemEmails"
-                                        onChange={Formik.handleChange}
-                                        onBlur={Formik.handleBlur}
-                                        checked={Formik.values.systemEmails}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        checked={formik.values.systemEmails}
                                     />
                                     <span className="slider round"></span>
                                 </label>
                             </div>
                             <div id="preference-2">
-                                <label htmlFor="MemberServicesEmails">
-                                    Member Services Emails
-                                </label>
+                                <label htmlFor="MemberServicesEmails">Member Services Emails</label>
                                 <label className="switch">
                                     <input
                                         name="memberServiceEmails"
                                         type="checkbox"
-                                        onChange={Formik.handleChange}
-                                        onBlur={Formik.handleBlur}
-                                        checked={
-                                            Formik.values.memberServiceEmails
-                                        }
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        checked={formik.values.memberServiceEmails}
                                     />
                                     <span className="slider round"></span>
                                 </label>
                             </div>
                         </div>
-                        <div
-                            id="preference-details"
-                            className="communication-details"
-                        >
+                        <div id="preference-details" className="communication-details">
                             <div id="preference-1">
                                 <label htmlFor="sms">SMS</label>
                                 <label className="switch">
                                     <input
                                         name="sms"
                                         type="checkbox"
-                                        onChange={Formik.handleChange}
-                                        onBlur={Formik.handleBlur}
-                                        checked={Formik.values.sms}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        checked={formik.values.sms}
                                     />
                                     <span className="slider round"></span>
                                 </label>
@@ -487,27 +442,24 @@ const Preference: React.FC = () => {
                                     <input
                                         type="checkbox"
                                         name="phoneCall"
-                                        onChange={Formik.handleChange}
-                                        onBlur={Formik.handleBlur}
-                                        checked={Formik.values.phoneCall}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        checked={formik.values.phoneCall}
                                     />
                                     <span className="slider round"></span>
                                 </label>
                             </div>
                         </div>
-                        <div
-                            id="preference-details"
-                            className="communication-details"
-                        >
+                        <div id="preference-details" className="communication-details">
                             <div id="preference-1">
                                 <label htmlFor="Post">Post</label>
                                 <label className="switch">
                                     <input
                                         name="post"
                                         type="checkbox"
-                                        onChange={Formik.handleChange}
-                                        onBlur={Formik.handleBlur}
-                                        checked={Formik.values.post}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        checked={formik.values.post}
                                     />
                                     <span className="slider round"></span>
                                 </label>

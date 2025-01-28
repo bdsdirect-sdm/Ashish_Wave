@@ -63,6 +63,7 @@ const OptionsModel: React.FC<OptionsModelProps> = ({ closeModel }) => {
                     id="logout-btn"
                     onClick={() => {
                         localStorage.removeItem("token");
+                        localStorage.clear();
                         navigate("/login");
                     }}
                     style={{

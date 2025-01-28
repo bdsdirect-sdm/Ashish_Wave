@@ -16,21 +16,21 @@ import DynamicForm from './components/Form';
 
 function App() {
   const router = createBrowserRouter([
+    {
+      path: '*',
+      element: localStorage.getItem('token') ? <Dashboard /> : <Login />,
+    },
+    {
+      path: '/signup',
+      element: localStorage.getItem('token') ? <Dashboard /> : <Signup />,
+    },
+    {
+      path: '/login',
+      element: localStorage.getItem('token') ? <Dashboard /> : <Login />,
+    },
     {path: '/Form', element: <DynamicForm />},
     { path: '/', element: <Signup /> },
     {path: '/login', element: <Login />},
-    // {
-    //   path: '*',
-    //   element: localStorage.getItem('token') ? <Dashboard /> : <Login />,
-    // },
-    // {
-    //   path: '/signup',  
-    //   element: localStorage.getItem('token') ? <Dashboard /> : <Signup />,
-    // },
-    // {
-    //   path: '/login',
-    //   element: localStorage.getItem('token') ? <Dashboard /> : <Login />,
-    // },
     {path: '/dashboard', element: <Dashboard />},
     {path: '/profile', element: <Profile />}, 
     {path: '/preferences', element: <Preference />},
