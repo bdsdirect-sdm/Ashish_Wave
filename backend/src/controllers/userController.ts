@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-// import { Request, Response, NextFunction } from 'express';
 import Preference from '../models/Preference';
 import Comment from '../models/Comments';
 
@@ -38,30 +37,45 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 };
 
 
-export const loginUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-        const { email, password } = req.body;
+const loginAttempts: { [key: string]: { count: number; blockUntil: number } } = {};
 
+export const loginUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { email, password } = req.body;
+
+    // Block user if they've exceeded attempts
+    const blockInfo = loginAttempts[email];
+    if (blockInfo && Date.now() < blockInfo.blockUntil) {
+        res.status(403).json({ message: "Too many attempts, try again later" });
+        return;
+    }
+
+    try {
         const user = await User.findOne({ where: { email } });
         if (!user) {
-            res.status(400).json({ error: 'Invalid email or password' });
+            res.status(404).json({ message: "User not found" });
             return;
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            res.status(400).json({ error: 'Invalid email or password' });
+            if (!blockInfo) {
+                loginAttempts[email] = { count: 1, blockUntil: 0 };
+            } else {
+                blockInfo.count += 1;
+                if (blockInfo.count >= 3) {
+                    blockInfo.blockUntil = Date.now() + 5 * 60 * 1000; // Block for 5 minutes
+                    blockInfo.count = 0;
+                }
+            }
+            res.status(401).json({ message: "Invalid password" });
             return;
         }
 
-        const token = jwt.sign({ id: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
-
-
+        loginAttempts[email] = { count: 0, blockUntil: 0 }; // Reset after success
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "your_jwt_secret", { expiresIn: "1h" });
         res.status(200).json({ token, message: 'Login Successful' });
     } catch (error) {
-        res.status(500).json({ message: 'login Failed' })
-        console.log(error)
-        return
+        res.status(500).json({ message: "Login error" });
     }
 };
 
